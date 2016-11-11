@@ -6,200 +6,129 @@
     <title>Lab 04 Starter Template</title>
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
 
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.css" />
-	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.1/dist/leaflet.css" />
-	<link href="https://fonts.googleapis.com/css?family=Noto+Sans" rel="stylesheet">
-	<link href="https://fonts.googleapis.com/css?family=Lora" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.1/dist/leaflet.css" />
+    <link href="https://fonts.googleapis.com/css?family=Noto+Sans" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lora" rel="stylesheet">
 
-	<style>
-		body {
-			margin: 0;
-			padding: 0;
-			background: whitesmoke;
-			font-family: "Noto Sans", sans-serif;
-			color: #3d3d3d;
-		}
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: whitesmoke;
+            font-family: "Noto Sans", sans-serif;
+            color: #3d3d3d;
+        }
 
-    	section {
-			width: 960px;
-			margin: 20px auto;
-		}
+        section {
+            width: 960px;
+            margin: 20px auto;
+        }
 
-		h1 {
-			width: 960px;
-			margin: 20px auto;
-			font-family: "Lora", serif;
-			letter-spacing: .04em;
-		}
+        h1 {
+            width: 960px;
+            margin: 20px auto;
+            font-family: "Lora", serif;
+            letter-spacing: .04em;
+        }
 
-		h2 {
-			font-family: "Lora", serif;
-			letter-spacing: .04em;
-		}
+        h2 {
+            font-family: "Lora", serif;
+            letter-spacing: .04em;
+        }
 
-		p {
-			font-size: 1em;
-			line-height: 1.5em;
-		}
+        p {
+            font-size: 1em;
+            line-height: 1.5em;
+        }
 
-		a {
-			color: #005daa;
-      		font-weight: bold;
-			text-decoration: none;
-		}
+        a {
+            color: #005daa;
+            font-weight: bold;
+            text-decoration: none;
+        }
 
-		a:hover {
-			text-decoration: underline;
-		}
-		#map {
-		  width: 960px;
-		  height: 540px;
-		  margin: 10px auto;
-		  border: 2px solid #d3d3d3;
-		}
-	</style>
+        a:hover {
+            text-decoration: underline;
+        }
+
+        #map {
+            width: 960px;
+            height: 540px;
+            margin: 10px auto;
+            border: 2px solid #d3d3d3;
+        }
+    </style>
 </head>
 
 <body>
 
-	<h1>Capital Cites of the Four Corner States</h1>
+    <h1>Capital Cites of the Four Corner States</h1>
 
     <div id='map'></div>
 
-	<section>
-		
-		<h2>About This Map</h2>
-		
-        <p>My map shows the precise locations and populations of the three capital cites of Colorado, Utah, and Arizona. The capital Phoenix, Arizona has the largest population by far at 1,445,362. Denver, Colorado comes in second at 649,495 in population. Salt Lake City, Utah is the smallest of these cities in relation to population at 186,440. The console log for this map displays the basic information for each of these three cities and runs in a fully functional "Loop".</p>
-        
-		<p>Map authored by Owen Mickelson on November 3, 2016</p>
+    <section>
 
-		<p>The information about where my map is centered at the <a href="https://tools.wmflabs.org/geohack/geohack.php?pagename=Four_Corners_Monument&params=36.998976_N_-109.045172_E_type:landmark">Four Corners Monument coordinates</a> can be found here. </p>
-        
+        <h2>About This Map</h2>
+
+        <p>My map shows the precise locations and populations of the three capital cites of Colorado, Utah, and Arizona. The capital Phoenix, Arizona has the largest population by far at 1,445,362. Denver, Colorado comes in second at 649,495 in population.
+            Salt Lake City, Utah is the smallest of these cities in relation to population at 186,440. The console log for this map displays the basic information for each of these three cities and runs in a fully functional "Loop".</p>
+
+        <p>Map authored by Owen Mickelson on November 3, 2016</p>
+
+        <p>The information about where my map is centered at the <a href="https://tools.wmflabs.org/geohack/geohack.php?pagename=Four_Corners_Monument&params=36.998976_N_-109.045172_E_type:landmark">Four Corners Monument coordinates</a> can be found here.
+            </p>
+
         <p>Information about the population and coordinates for <a href="https://www.google.com/#q=denver+colorado+population+and+coordinates">Denver, Colorado</a> can be found here. </p>
-        
+
         <p>General information about <a href="https://en.wikipedia.org/wiki/Salt_Lake_City">Salt Lake City, Utah</a> can be found here. </p>
-        
-        
+
+
         <p>General information about <a href="https://en.wikipedia.org/wiki/Phoenix,_Arizona">Phoenix, Arizona</a> can be found here. </p>
 
-	</section>
-	
-	<script src="http://code.jquery.com/jquery-3.1.1.min.js"></script>
-	<script src="https://unpkg.com/leaflet@1.0.1/dist/leaflet.js"></script>
-    <script>
+    </section>
 
-		// initial map options
-		var options = {
+    <script src="http://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.0.1/dist/leaflet.js"></script>
+    <script>
+        // initial map options
+        var options = {
             center: [36.9991, -109.0452],
             zoom: 5
         }
-		
-		// instantiate Leaflet map object
+
+        // instantiate Leaflet map object
         var map = L.map('map', options);
-        
-		// request remote basemap tiles
-		var tiles = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
-	attribution: 'Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012'
-});
-		
+
+        // request remote basemap tiles
+        var tiles = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
+            attribution: 'Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012'
+        });
+
         var cities = ["Denver", "Salt Lake City", "Phoenix"];
         var cityPops = [649495, 186440, 1445362];
-        var cityCoords = [[39.74, -104.99], [40.75, -111.88333], [33.45, -112.066667]];
-        var cityCapital = ["Captial: true", "Capital: true", "Capital: true"];
-        
+        var cityCoords = [
+            [39.74, -104.99],
+            [40.75, -111.88333],
+            [33.45, -112.066667]
+        ];
+        var cityCapital = [true, true, true];
+
         for (var i = 0; i < cities.length; i++) {
-            
-        var cityName = cities[i];
-            
-        console.log(cities[i]);
-        
-        var cityPopulation = cityPops[i];
-            
-        console.log(cityPops[i]);
-            
-        console.log(cityCoords[i]);
-     
-        console.log(cityCapital[i]);
-        
-}
-        
-        console.log('Loop Done')
-        
-        // add tiles to map
-        map.addLayer(tiles);
-            
-		// variable to hold string value of city name
-		var cityName = "Denver";
-		
-		// variable to hold number value of city population
-		var cityPopulation = 649495;
-        
-		var cityCapital = true
-        
-        // build a string with HTML tags and content
-        var popup = "<b>" + cityName + "</b><br>" +
-                    "<b>Population</b>: " + cityPopulation + 
-                    "<br><b>Capital of Colorado</b>"
 
-        // create a Leaflet marker at the coordinates of Denver, CO
-		// add it to the map
-		// and bind the popup content to the marker.
-        var cityCoords = [39.74, -104.99]
-        L.marker(cityCoords).addTo(map)
-			.bindPopup(popup);
-        
-        
-        
-        
-        
-        // add tiles to map
-        map.addLayer(tiles);
-            
-		// variable to hold string value of city name
-		var cityName = "Salt Lake City";
-		
-		// variable to hold number value of city population
-		var cityPopulation = 186440;
-        
-		// build a string with HTML tags and content
-        var popup = "<b>" + cityName + "</b><br>" +
-                    "<b>Population</b>: " + cityPopulation + 
-                    "<br><b>Capital of Utah</b>" 
+          var popup = "<b>" + cities[i] + "</b><br>" +
+              "<b>Population</b>: " + cityPops[i];
 
-        // create a Leaflet marker at the coordinates of Denver, CO
-		// add it to the map
-		// and bind the popup content to the marker.
-        var cityCoords = [40.75, -111.88333]
-        L.marker(cityCoords).addTo(map)
-			.bindPopup(popup);
-        
-        
-        
-        
-        
-         // add tiles to map
-        map.addLayer(tiles);
-            
-		// variable to hold string value of city name
-		var cityName = "Phoenix";
-		
-		// variable to hold number value of city population
-		var cityPopulation = 1445362;
-        
-		// build a string with HTML tags and content
-        var popup = "<b>" + cityName + "</b><br>" +
-                    "<b>Population</b>: " + cityPopulation + 
-                    "<br><b>Capital of Arizona</b>"
+          if(cityCapital === true) {
+            popup += "<br><b>Is a capital city</b>"
+          }
 
-        // create a Leaflet marker at the coordinates of Denver, CO
-		// add it to the map
-		// and bind the popup content to the marker.
-        var cityCoords = [33.45, -112.066667]
-        L.marker(cityCoords).addTo(map)
-			.bindPopup(popup);
-        
-              
+          L.marker(cityCoords[i]).addTo(map)
+              .bindPopup(popup);
+
+        }
+
+
     </script>
-    
+
 </body>

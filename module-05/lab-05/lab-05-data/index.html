@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset=utf-8 />
+	<title>Lab 05 Solution</title>
+	<meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.css" />
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.1/dist/leaflet.css" />
+	<link href="https://fonts.googleapis.com/css?family=Noto+Sans" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Lora" rel="stylesheet">
+
+	<style>
+		body {
+			margin: 0;
+			padding: 0;
+			background: whitesmoke;
+			font-family: "Noto Sans", sans-serif;
+			color: #3d3d3d;
+		}
+		
+		section {
+			width: 960px;
+			margin: 20px auto;
+		}
+		
+		h1 {
+			width: 960px;
+			margin: 20px auto;
+			font-family: "Lora", serif;
+			letter-spacing: .04em;
+		}
+		
+		h2 {
+			font-family: "Lora", serif;
+			letter-spacing: .04em;
+		}
+		
+		p {
+			font-size: 1em;
+			line-height: 1.5em;
+		}
+		
+		a {
+			color: #005daa;
+			font-weight: bold;
+			text-decoration: none;
+		}
+		
+		a:hover {
+			text-decoration: underline;
+		}
+		
+		#map {
+			width: 960px;
+			height: 540px;
+			margin: 10px auto;
+			border: 2px solid #d3d3d3;
+		}
+		
+		button {
+			font-size: 1.2em;
+			/*            margin: 10px auto;*/
+		}
+	</style>
+</head>
+
+<body>
+	<h1>Population Per Square Miles in Metropolis</h1>
+
+	<div id='map'></div>
+
+
+	<section>
+
+		<button id='map-cities'>Metropolis Cities</button>
+
+		<h2>About this map</h2>
+
+		<p>Map authored by Owen Mickelson</p>
+
+		<p>Additional information about <a href="#">the data</a> and map goes here. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis urna magna, maximus nec laoreet sit amet, dictum ultricies nibh. Ut id auctor lacus. Nam a dolor et justo luctus luctus. </p>
+
+	</section>
+
+	<script src="http://code.jquery.com/jquery-3.1.1.min.js"></script>
+	<script src="https://unpkg.com/leaflet@1.0.1/dist/leaflet.js"></script>
+
+	<script>
+		// map options
+		var options = {
+			center: [40, -74],
+			zoom: 6
+		}
+
+		// creates the Leaflet map
+		var map = L.map('map', options);
+
+		// requests some map tiles
+		var tiles = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
+			attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
+			subdomains: 'abcd',
+			maxZoom: 19
+		});
+
+		// adds these tiles to the map
+		map.addLayer(tiles);
+        
+            var cities = ["New York City", "Boston", "Washington"];
+        
+		     var cityCoords = [[40.7128, -74.0059], [42.3601, -71.0589], [38.9072, -77.0369]];
+        
+		    var cityPops = [8406000, 645966, 658893];
+        
+		    var cityAreas = [[304.6 * 304.6], [89.63 * 89.63], [68.34 * 68.34]];
+        
+            for (var i = 0; i < cities.length; i++) {
+                
+                var cityName = cities[i];
+                
+                console.log(cities[i]);
+                
+            }
+		
+         
+        map.addLayer(tiles);
+            
+		var cityName = "New York City";
+		
+		var cityPopulation = 8406000;
+        
+		var cityArea = 304.6 * 304.6;
+        
+        var popup = "<b>" + cityName + "</b><br>" +
+                    "<b>Population</b>: " + cityPopulation + 
+                    "<br><b>Area</b>: " + cityArea;
+
+        var cityCoords = [40.7128, -74.0059]
+        L.marker(cityCoords).addTo(map)
+			.bindPopup(popup);
+        
+        
+         
+        map.addLayer(tiles);
+            
+		var cityName = "Boston";
+		
+		var cityPopulation = 645966;
+        
+		var cityArea = 89.63 * 89.63;
+        
+        var popup = "<b>" + cityName + "</b><br>" +
+                    "<b>Population</b>: " + cityPopulation + 
+                    "<br><b>Area</b>: " + cityArea;
+
+        var cityCoords = [42.3601, -71.0589]
+        L.marker(cityCoords).addTo(map)
+			.bindPopup(popup);
+        
+        
+        
+         map.addLayer(tiles);
+            
+		var cityName = "Washington";
+		
+		var cityPopulation = 658893;
+        
+		var cityArea = 68.34 * 68.34;
+        
+        var popup = "<b>" + cityName + "</b><br>" +
+                    "<b>Population</b>: " + cityPopulation + 
+                    "<br><b>Area</b>: " + cityArea;
+
+        var cityCoords = [38.9072, -77.0369]
+        L.marker(cityCoords).addTo(map)
+			.bindPopup(popup);
+        
+        
+        
+       var button = document.getElementById("map-cities");
+		
+        button.addEventListener("click", function () {
+			
+            var units = prompt('Enter the units for calculating density', 'Enter "miles" or "km"');
+			
+            mapCities(units);
+			
+            // call a function named mapCities, and send the units variable as an argument
+		
+        }); // addEventListener callback function ends here
+		
+        // write a function here named mapCities so that it accepts units as a parameter
+		
+        // write a function named calcPopDensity here so that it accepts a 
+		
+        // single city's population, area, and the value for units 
+		
+        // determined by the user
+		
+		
+	</script>
+
+</body>
+
+</html>
+
+<script>

@@ -74,11 +74,13 @@
 
 	<section>
 
-		<button id='map-cities'>Metropolis Cities</button>
+		<button id='map-cities'>Find Population Density of Each City!</button>
+        
+        <button id='reset-cities'>Reset Cities</button>
 
 		<h2>About this map</h2>
 
-		<p>Map authored by Owen Mickelson</p>
+		<p>Map authored by Owen Mickelson on November 11, 2016</p>
 
 		<p>Additional information about <a href="#">the data</a> and map goes here. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis urna magna, maximus nec laoreet sit amet, dictum ultricies nibh. Ut id auctor lacus. Nam a dolor et justo luctus luctus. </p>
 
@@ -90,7 +92,7 @@
 	<script>
 		// map options
 		var options = {
-			center: [40, -74],
+			center: [41, -74],
 			zoom: 6
 		}
 
@@ -104,102 +106,143 @@
 			maxZoom: 19
 		});
 
-		// adds these tiles to the map
+		
 		map.addLayer(tiles);
         
-            var cities = ["New York City", "Boston", "Washington"];
+            //List of Cities and Attributes
         
-		     var cityCoords = [[40.7128, -74.0059], [42.3601, -71.0589], [38.9072, -77.0369]];
+            var cities = ["New York City", "Boston", "Washington DC"];
+        
+		    var cityCoords = [[40.7128, -74.0059], [42.3601, -71.0589], [38.9072, -77.0369]];
         
 		    var cityPops = [8406000, 645966, 658893];
         
-		    var cityAreas = [[304.6 * 304.6], [89.63 * 89.63], [68.34 * 68.34]];
+		    var cityAreas = [304.6, 89.63, 68.34]
+            
+            var cityAreas1 = [788.9, 232.1, 177.0]
+            
+            
+            for (var i = 0; i < cities.length; i++) 
+             
+                 
         
-            for (var i = 0; i < cities.length; i++) {
-                
-                var cityName = cities[i];
-                
-                console.log(cities[i]);
-                
-            }
-		
+            {var popup = "<b>" + cities[i] + "</b><br>" +
+              "<b>Population</b>: " + cityPops[i] + "</b><br>" +
+              "<b>Square Miles</b>: " + cityAreas[i] + "</b><br>" +
+              "<b>Square Kilometers</b>: " + cityAreas1[i];
+                 
+            
+             L.marker(cityCoords[i]).addTo(map)
+              .bindPopup(popup);}
+            
+            
+         // Reset Cities
          
-        map.addLayer(tiles);
-            
-		var cityName = "New York City";
-		
-		var cityPopulation = 8406000;
-        
-		var cityArea = 304.6 * 304.6;
-        
-        var popup = "<b>" + cityName + "</b><br>" +
-                    "<b>Population</b>: " + cityPopulation + 
-                    "<br><b>Area</b>: " + cityArea;
-
-        var cityCoords = [40.7128, -74.0059]
-        L.marker(cityCoords).addTo(map)
-			.bindPopup(popup);
-        
-        
-         
-        map.addLayer(tiles);
-            
-		var cityName = "Boston";
-		
-		var cityPopulation = 645966;
-        
-		var cityArea = 89.63 * 89.63;
-        
-        var popup = "<b>" + cityName + "</b><br>" +
-                    "<b>Population</b>: " + cityPopulation + 
-                    "<br><b>Area</b>: " + cityArea;
-
-        var cityCoords = [42.3601, -71.0589]
-        L.marker(cityCoords).addTo(map)
-			.bindPopup(popup);
-        
-        
-        
-         map.addLayer(tiles);
-            
-		var cityName = "Washington";
-		
-		var cityPopulation = 658893;
-        
-		var cityArea = 68.34 * 68.34;
-        
-        var popup = "<b>" + cityName + "</b><br>" +
-                    "<b>Population</b>: " + cityPopulation + 
-                    "<br><b>Area</b>: " + cityArea;
-
-        var cityCoords = [38.9072, -77.0369]
-        L.marker(cityCoords).addTo(map)
-			.bindPopup(popup);
-        
-        
-        
-       var button = document.getElementById("map-cities");
+        var button = document.getElementById("reset-cities");
 		
         button.addEventListener("click", function () {
+
+            do{
+                
+            var units = prompt('Reset the cities by typing reset', 'Type "reset"')
+            
+            } while (units != "reset")
+                
+            console.log(units);
+            
+            resetCities(units);
+            
+            });
 			
-            var units = prompt('Enter the units for calculating density', 'Enter "miles" or "km"');
+        
+        function resetCities(units){
+            
+        for (var i = 0; i < cities.length; i++) 
+            
+        {var popup = "<b>" + cities[i] + "</b><br>" +
+              "<b>Population</b>: " + cityPops[i] + "</b><br>" +
+              "<b>Square Miles</b>: " + cityAreas[i] + "</b><br>" +
+              "<b>Square Kilometers</b>: " + cityAreas1[i];
+                 
+            
+             L.marker(cityCoords[i]).addTo(map)
+              .bindPopup(popup);}
+            
+        }
+            
+         
+        
+        
+        // Find Population Density
+         
+        var button = document.getElementById("map-cities");
+		
+        button.addEventListener("click", function () {
+
+            do{
+            
+            var units = prompt('Enter the units for finding the population density of each city', 'Enter "miles" or "kilometers"');
+            
+            } while (units != "miles" && units != "kilometers")
+			
+            console.log(units);
 			
             mapCities(units);
-			
-            // call a function named mapCities, and send the units variable as an argument
+            
+         
+            
 		
-        }); // addEventListener callback function ends here
+        }); 
+        
+        
+   
+        
 		
-        // write a function here named mapCities so that it accepts units as a parameter
+        function mapCities(units){
+            
+             for (var i = 0; i < cities.length; i++) 
+             
+             {var densityValue = calcPopDenstiy(cityPops[i], cityAreas[i], units).toFixed(2);    
+        
+             var popup = "<b>" + cities[i] + ":" + "</b><br>"
+                + "The population density is<br>"
+                + densityValue+" people per square " + units;
+                 
+            
+             L.marker(cityCoords[i]).addTo(map)
+              .bindPopup(popup);}
+        
+        }
+        
+            
+            
+        
 		
-        // write a function named calcPopDensity here so that it accepts a 
+        function calcPopDenstiy (pop, area, units) {
+            
+            if (units=="miles") 
+            {var density = pop/area;
+            return density;} 
+            
+            else if (units=="kilometers") 
+            {var kmarea = area * 2.589;
+            var kmdensity = pop / kmarea;
+            return kmdensity;}
+        
+        }
+        
+        
+       
+        
+            
+       
 		
-        // single city's population, area, and the value for units 
-		
-        // determined by the user
-		
-		
-	</script>
+		</script>
+    
+    
+    
+
+
 
 </body>
 

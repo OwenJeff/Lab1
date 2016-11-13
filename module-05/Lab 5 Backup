@@ -1,0 +1,36 @@
+        //Find Population, Square Miles and Kilometers 
+            
+        var button = document.getElementById("show-cities");
+		
+        button.addEventListener("click", function () {
+
+            do{
+            
+            var cities = prompt('Display City Attributes', 'Enter Display"');
+            
+            } while (cities != "cities")
+			
+            console.log(cities);
+			
+            mapCities(cities);
+		
+        });
+		
+        
+		
+        function mapCities(units){
+            
+             for (var i = 0; i < cities.length; i++) 
+             
+             {var cities = (cityPops[i], cityAreas[i]).toFixed(2);    
+        
+             var popup = "<b>" + cities[i] + "</b><br>" +
+              "<b>Population</b>: " + cityPops[i] + "</b><br>" +
+              "<b>Square Miles</b>: " + cityAreas[i] + "</b><br>" +
+              "<b>Square Kilometers</b>: " + cityAreas1[i];
+                 
+            
+             L.marker(cityCoords[i]).addTo(map)
+              .bindPopup(popup);}
+        
+        }

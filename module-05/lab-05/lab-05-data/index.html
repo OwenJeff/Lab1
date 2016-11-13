@@ -63,26 +63,43 @@
 			font-size: 1.2em;
 			/*            margin: 10px auto;*/
 		}
+        
+        img {
+            display: block;
+            margin: 0 auto;
+            height: 200px;
+            width: 1000px;
+        }
 	</style>
 </head>
 
 <body>
-	<h1>Population Per Square Miles in Metropolis</h1>
+	<h1>Population Density in the Cities of Metropolis</h1>
 
-	<div id='map'></div>
+	<img src="C:/Users/JeffOwen/Documents/GitHub/map672-fall16/module-05/lab-05/lab-05-data/1200px-Manhattan_from_Weehawken,_NJ.jpg">
+    
+    <div id='map'></div>
 
 
 	<section>
 
-		<button id='map-cities'>Find Population Density of Each City!</button>
+		<button id='map-cities'>Find the Population Density of Each City</button>
         
-        <button id='reset-cities'>Reset Cities</button>
+        <button id='reset-cities'>Reset the Cities to Display City Attributes</button>
 
 		<h2>About this map</h2>
 
-		<p>Map authored by Owen Mickelson on November 11, 2016</p>
+		<p>Shown on this map are some of the three largest cities in the very populated area known as Metropolis. There are many towns and cities bunched together throughout this region of the United States. This map however focuses New York City, Boston, and Washington DC. New York City by far has the highest population and population density. Washington DC comes in second with these attributes and Boston comes in third. The overall purpose to this map is to show just how condensed and crowded this Metropolis region is. This area is in fact the most heavy populated in the United States.</p>
+        
+        <p>Map authored by Owen Mickelson on November 11, 2016</p>
 
-		<p>Additional information about <a href="#">the data</a> and map goes here. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis urna magna, maximus nec laoreet sit amet, dictum ultricies nibh. Ut id auctor lacus. Nam a dolor et justo luctus luctus. </p>
+		<p>Additional information about <a href="https://en.wikipedia.org/wiki/New_York_City">New York City</a> may be found here.  </p>
+        
+        <p>More information about <a href="https://en.wikipedia.org/wiki/Boston">Boston</a> can be found here.  </p>
+        
+        <p>Information about <a href="https://en.wikipedia.org/wiki/Washington,_D.C.">Washington DC</a> is found here.  </p>
+        
+        <p>The source for the image is from here <a href="https://en.wikipedia.org/wiki/New_York_City#/media/File:Manhattan_from_Weehawken,_NJ.jpg">New York City Panorama</a></p>
 
 	</section>
 
@@ -144,7 +161,7 @@
 
             do{
                 
-            var units = prompt('Reset the cities by typing reset', 'Type "reset"')
+            var units = prompt('Reset the city attributes by entering "reset"', 'Enter "reset"')
             
             } while (units != "reset")
                 

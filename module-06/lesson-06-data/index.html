@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset=utf-8 />
+    <title>Lesson 06 Starter Template</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+</head>
+
+<body>
+
+
+<script>
+
+var iguanas = [
+    {
+    
+    name : "jack",
+    toolkit : {
+        food : true,
+        music : "Diplo",
+        sunglasses : 8
+        
+    }
+    },
+    
+     {
+    
+    name : "Jane",
+    toolkit : {
+        food : false,
+        music : "Chemical Brothers",
+        sunglasses : 4
+        
+    }
+    },
+    
+     {
+    
+    name : "Mary",
+    toolkit : {
+        food : true,
+        music : "Bob Moses",
+        sunglasses : 6
+        
+    }
+    }
+    
+];
+  
+for(var i = 0; i < iguanas.length; i++) {
+    
+    var tools = iguanas[i].toolkit;
+    
+    var status = checkFoodAndSunglasses(tools.food, iguanas[i].name, 
+    tools.sunglasses);
+    console.log(status);
+}
+    
+function checkFoodAndSunglasses(food, iguana, glasses) {
+    
+    if(food === true) {
+        return iguana + " is doing just fine and has " + glasses + " sunglasses."
+    } else if(food === false) {
+    return iguana + " is running out of food and has " + glasses + " sunglasses."
+}
+}
+
+</script>
+    
+</body>

@@ -58,6 +58,18 @@
             margin: 10px auto;
             border: 2px solid #d3d3d3;
         }
+        
+        .washington-green {
+            color:#83b023;
+        }
+        
+        .oregon-blue {
+            color:#0c5485;
+        }
+        
+        .california-red {
+            color:#bc2739; 
+        }
     </style>
 </head>
 
@@ -69,7 +81,7 @@
 
     <section>
 
-        <p>Map authored by me, MY NAME</p>
+        <p>Map authored by Owen Mickelson on November 18, 2016</p>
 
         <p>Additional information about <a href="#">the data</a> and map goes here. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis urna magna, maximus nec laoreet sit amet, dictum ultricies nibh. Ut id auctor lacus. Nam a dolor et justo luctus luctus. </p>
 
@@ -80,8 +92,8 @@
 
     <script>
         var map = L.map('map', {
-            center: [37, -122],
-            zoom: 6,
+            center: [42.5, -122],
+            zoom: 5,
         });
 
         var tiles = L.tileLayer('http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png', {
@@ -110,11 +122,19 @@
 
 
         var cities = [{
-                name: "san francisco",
+                name: "seattle",
                 properties: {
-                    coordinates: [37.7749, -122.4194],
-                    population: 857442,
-                    state: "CA"
+                    coordinates: [47.6062, -122.3321],
+                    population: 652405 ,
+                    state: "WA"
+                }
+            },
+            {
+                name: "portland",
+                properties: {
+                    coordinates: [45.5231, -122.6765],
+                    population: 609456,
+                    state: "OR"
                 }
             },
             {
@@ -124,34 +144,46 @@
                     population: 3884000,
                     state: "CA"
                 }
-            },
-            {
-                name: "san diego",
-                properties: {
-                    coordinates: [32.7157, -117.1611],
-                    population: 1356000,
-                    state: "CA"
-                }
             }];
 
         for (var i = 0; i < cities.length; i++) {
-//            console.log(i, cities[i]);
+            
+            console.log(cities[i]);
+            
             var props = cities[i].properties;
-            console.log(props.population);
-//
-//            var status = checkCoordinatesAndPopulationAndState(props.coordinates, cities[i].name, props.population, props.state);
-//
-//            console.log(status);
+            
+            var popup = buildPopup(cities[i].name, props.population, props.state);
 
+            L.marker(props.coordinates).addTo(map)
+            .bindPopup(popup);
+            
         }
-
-
-        function checkCoordinatesAndPopulationAndState(coordinates, cities, population, state) {
-
-            if (state === CA) {
-                return cities + props
+            
+            function buildPopup(name, population, state) {
+        
+            
+                
+            if(name == "seattle") {
+            var colorClass = "washington-green";
             }
-        }
+            
+            else if(name == "portland") {
+            var colorClass = "oregon-blue";
+            }
+            
+            else if(name == "los angeles") {
+            var colorClass = "california-red";
+            }
+            
+            return "<div class='"+colorClass+"'><b>"+cities[i].name+"</b><br>"+
+            "<b>population</b>: "+props.population+"<div>";
+                
+            }
+        
+        
+
+
+       
     </script>
 
 </body>

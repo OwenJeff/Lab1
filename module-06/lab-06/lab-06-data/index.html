@@ -58,7 +58,10 @@
             margin: 10px auto;
             border: 2px solid #d3d3d3;
         }
-        
+        image {
+            width: 90px;
+            height: 90px;
+            }
         .washington-green {
             color:#83b023;
         }
@@ -74,7 +77,7 @@
 </head>
 
 <body>
-    <h1>map title</h1>
+    <h1>West Coast Cities</h1>
 
     <div id='map'></div>
 
@@ -91,6 +94,9 @@
     <script src="https://unpkg.com/leaflet@1.0.1/dist/leaflet.js"></script>
 
     <script>
+        
+        // Begin writing/modifying code for Lab 06 here
+        
         var map = L.map('map', {
             center: [42.5, -122],
             zoom: 5,
@@ -102,31 +108,17 @@
         });
         map.addLayer(tiles);
 
-        // Begin writing/modifying code for Lab 06 here
-
+       
         // define the cities data within an object and store all within an array
 
-        // loop through each city and
-
-        // create a variable to access each city's properties
-
-        // create a variable to store the popup content for each city
-
-        // retrieve this content with a call to a function that will
-
-        // assign a CSS class name to a variable used to color the text
-
-        // return a string concatenating the name and population of each city within HTML // assign the return value of the function to the popup variable
-
-        // create a Leaflet marker with the city's coordinates and bind the popup
-
-
+        
         var cities = [{
                 name: "seattle",
                 properties: {
                     coordinates: [47.6062, -122.3321],
                     population: 652405 ,
-                    state: "WA"
+                    state: "WA",
+                    image: "Images/view-from-heli-250x211.jpg"
                 }
             },
             {
@@ -134,7 +126,8 @@
                 properties: {
                     coordinates: [45.5231, -122.6765],
                     population: 609456,
-                    state: "OR"
+                    state: "OR",
+                    image: "Images/whitestag2576.jpg"
                 }
             },
             {
@@ -142,49 +135,62 @@
                 properties: {
                     coordinates: [34.0522, -118.2437],
                     population: 3884000,
-                    state: "CA"
+                    state: "CA",
+                    image: "Images/LA_Skyline_Mountains2.jpg"
                 }
             }];
 
+        // loop through each city
+        
         for (var i = 0; i < cities.length; i++) {
             
             console.log(cities[i]);
             
+            // create a variable to access each city's properties
+            
             var props = cities[i].properties;
             
-            var popup = buildPopup(cities[i].name, props.population, props.state);
+            // create a variable to store the popup content for each city
+            
+            var popup = buildPopup(props.image, cities[i].name, props.population, props.state);
 
+            // create a Leaflet marker with the city's coordinates and bind the popup
+            
             L.marker(props.coordinates).addTo(map)
             .bindPopup(popup);
             
         }
             
-            function buildPopup(name, population, state) {
+           // retrieve this content with a call to a function that will assign a CSS class name to a variable used to color the text 
+        
+        
+        function buildPopup(image, name, population, state) {
         
             
                 
-            if(name == "seattle") {
+            if(state == "WA") {
             var colorClass = "washington-green";
             }
             
-            else if(name == "portland") {
+            else if(state == "OR") {
             var colorClass = "oregon-blue";
             }
             
-            else if(name == "los angeles") {
+            else if(state == "CA") {
             var colorClass = "california-red";
             }
             
-            return "<div class='"+colorClass+"'><b>"+cities[i].name+"</b><br>"+
-            "<b>population</b>: "+props.population+"<div>";
+            // return a string concatenating the name and population of each city within HTML, assign the return value of the function to the popup variable
+            
+            return 
+            "<img class='image' src='"+image+"'><br>" +
+            "<div class='"+colorClass+"'><b>"+cities[i].name+"</b><br>"+
+            "<b>population</b>: "+population.toLocaleString()+"<div>";
                 
+            
             }
         
-        
-
-
-       
-    </script>
+        </script>
 
 </body>
 

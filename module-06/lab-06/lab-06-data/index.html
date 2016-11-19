@@ -58,10 +58,16 @@
             margin: 10px auto;
             border: 2px solid #d3d3d3;
         }
-        image {
+        .image {
             width: 90px;
-            height: 90px;
+            height: 70px;
             }
+        img {
+            display: block;
+            margin: 0 auto;
+            height: 200px;
+            width: 950px;
+        }
         .washington-green {
             color:#83b023;
         }
@@ -77,8 +83,16 @@
 </head>
 
 <body>
-    <h1>West Coast Cities</h1>
+    <h1>West Coast Cities of the United States</h1>
 
+    <img src="_1419_stitch_small.jpg">
+    
+    <section>
+    
+    <p>Golden Gate Bridge in San Francisco, California</p>
+    
+    </section>
+    
     <div id='map'></div>
 
 
@@ -97,8 +111,9 @@
         
         // Begin writing/modifying code for Lab 06 here
         
+        
         var map = L.map('map', {
-            center: [42.5, -122],
+            center: [43.5, -122],
             zoom: 5,
         });
 
@@ -113,34 +128,35 @@
 
         
         var cities = [{
-                name: "seattle",
+                name: "Seattle, Washington",
                 properties: {
                     coordinates: [47.6062, -122.3321],
                     population: 652405 ,
                     state: "WA",
-                    image: "Images/view-from-heli-250x211.jpg"
+                    image: "view-from-heli-250x211.jpg"
                 }
             },
             {
-                name: "portland",
+                name: "Portland, Oregon",
                 properties: {
                     coordinates: [45.5231, -122.6765],
                     population: 609456,
                     state: "OR",
-                    image: "Images/whitestag2576.jpg"
+                    image: "whitestag2576.jpg"
                 }
             },
             {
-                name: "los angeles",
+                name: "San Francisco, California",
                 properties: {
-                    coordinates: [34.0522, -118.2437],
-                    population: 3884000,
+                    coordinates: [37.7749, -122.4194],
+                    population: 837442,
                     state: "CA",
-                    image: "Images/LA_Skyline_Mountains2.jpg"
+                    image: "culture-and-cocktails.jpg"
                 }
             }];
 
         // loop through each city
+        
         
         for (var i = 0; i < cities.length; i++) {
             
@@ -148,13 +164,16 @@
             
             // create a variable to access each city's properties
             
+            
             var props = cities[i].properties;
             
             // create a variable to store the popup content for each city
             
+            
             var popup = buildPopup(props.image, cities[i].name, props.population, props.state);
 
             // create a Leaflet marker with the city's coordinates and bind the popup
+            
             
             L.marker(props.coordinates).addTo(map)
             .bindPopup(popup);
@@ -166,8 +185,6 @@
         
         function buildPopup(image, name, population, state) {
         
-            
-                
             if(state == "WA") {
             var colorClass = "washington-green";
             }
@@ -182,10 +199,10 @@
             
             // return a string concatenating the name and population of each city within HTML, assign the return value of the function to the popup variable
             
-            return 
-            "<img class='image' src='"+image+"'><br>" +
+            
+            return "<img class='image' src='"+image+"'><br>" +
             "<div class='"+colorClass+"'><b>"+cities[i].name+"</b><br>"+
-            "<b>population</b>: "+population.toLocaleString()+"<div>";
+            "<b>Population</b>: "+population.toLocaleString()+"<div>";
                 
             
             }

@@ -59,8 +59,8 @@
             border: 2px solid #d3d3d3;
         }
         .image {
-            width: 90px;
-            height: 70px;
+            width: 120px;
+            height: 100px;
             }
         img {
             display: block;
@@ -102,7 +102,7 @@
 
         <p>Map authored by Owen Mickelson on November 18, 2016</p>
 
-        <p>This map was created to show the locations of my favorite west coast cities. The funny part about these cities is, I have never been to any of them. I have wanted to travel to San Francisco and the surrounding areas. I have been to California but only the southern portion which might as well be a completely different state. I have also never been to Oregon or Washington. I hope at some point to take a trip out to those regions of the United States.</p>
+        <p>This map was created to show the locations of my favorite west coast cities. The funny part about these cities is, I have never been to any of them. I have always wanted to travel to San Francisco and the surrounding areas. I have been to California but only the southern portion which might as well be a completely different state from its northern half. I have also never been to Oregon or Washington. I hope at some point in the furture to take a trip out to those regions of the United States and explore those geographic areas.</p>
         
         <p>Additional information about Seattle, Washington is located here: <a href="https://en.wikipedia.org/wiki/Seattle"> Seattle, Washington</a> and the popup image is from here: <a href="https://www.spaceneedle.com/hours-directions/"> Space Needle</a> </p>
         
@@ -142,6 +142,7 @@
                     population: 652405 ,
                     state: "WA",
                     image: "view-from-heli-250x211.jpg",
+                    link: "https://www.spaceneedle.com/hours-directions/"
                 }
             },
             {
@@ -150,7 +151,8 @@
                     coordinates: [45.5231, -122.6765],
                     population: 609456,
                     state: "OR",
-                    image: "whitestag2576.jpg"
+                    image: "whitestag2576.jpg",
+                    link: "https://www.travelportland.com/things-to-do/"
                 }
             },
             {
@@ -159,7 +161,8 @@
                     coordinates: [37.7749, -122.4194],
                     population: 837442,
                     state: "CA",
-                    image: "culture-and-cocktails.jpg"
+                    image: "culture-and-cocktails.jpg",
+                    link: "https://www.tripadvisor.com/Tourism-g60713-San_Francisco_California-Vacations.html"
                 }
             }];
 
@@ -178,7 +181,7 @@
             // create a variable to store the popup content for each city
             
             
-            var popup = buildPopup(props.image, cities[i].name, props.population, props.state);
+            var popup = buildPopup(props.image, props.link, cities[i].name, props.population, props.state);
 
             // create a Leaflet marker with the city's coordinates and bind the popup
             
@@ -191,7 +194,7 @@
            // retrieve this content with a call to a function that will assign a CSS class name to a variable used to color the text 
         
         
-        function buildPopup(image, name, population, state) {
+        function buildPopup(image, link, name, population, state) {
         
             if(state == "WA") {
             var colorClass = "washington-green";
@@ -209,6 +212,7 @@
             
             
             return "<img class='image' src='"+image+"'><br>" +
+            "<a href='"+link+"'>Click here for more Info about this location</a>" +
             "<div class='"+colorClass+"'><b>"+cities[i].name+"</b><br>"+
             "<b>Population</b>: "+population.toLocaleString()+"<div>";
                 

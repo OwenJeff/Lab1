@@ -88,18 +88,48 @@
     <script>
 
     var options = {
-        center: [40.74,-110.61],
-        zoom: 6
+        center: [40.7718,-111.9124],
+        zoom: 7
     }
 
+    
+    
     var map = L.map('map', options);
+        
+    var tiles = L.tileLayer('http://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+	maxZoom: 17,
+	attribution: 'Map data: &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
+});
+        
+    tiles.addTo(map);
+        
+    map.setView([40.7718,-111.9124], 7);
+        
+    
+        
+    var bounds = map.getBounds();
+    
+    var myMarker = L.marker([40,-111],{
+            
+    draggable: true,
+    opacity: 10
+    
+    }).addTo(map);
+        
+    myMarker.on('dragend', function(e)
+               
+    { console.log(myMarker.getLatLng());
+    
+    });
 
+    
+        
     var redIguana = L.latLng(40.7718,-111.9124);
 
     L.marker(redIguana, {
         icon : L.icon({
             iconUrl: 'red_iguana.png',
-            iconSize: [40, 36]
+            iconSize: [50, 45]
         })
     }).addTo(map);
 
@@ -108,7 +138,26 @@
         console.log(e.latlng);
 
     });
+        
+    
+        
+    var redIguanaLocation = L.latLng(40.7718,-111.9124);
+    
+    var redIguanaCircle = L.circle(redIguanaLocation, 25, {
+    
+    color: "#d72b1e",  // changes the stroke color
+    
+    fillColor: "#d72b1e",  // changes the fill color
+        
+    fillOpacity: 1
+    
+    });
+    
+    console.log(redIguanaCircle);
+        
+    redIguanaCircle.addTo(map);
 
+    
     </script>
 
 </body>

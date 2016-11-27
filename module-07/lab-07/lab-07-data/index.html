@@ -78,14 +78,14 @@
 <body>
   <h1>Find Out How Far Away You Are From the Red Iguana</h1>
 
- <div id='map'></div>
+  <div id='map'></div>
 
  <section>
-   <h2>About this map</h2>
+   <h2>Click any spot on the map!</h2>
 
    <p>Map authored by Owen Mickelson on November 25, 2016</p>
 
-   <p>Additional information about <a href="#">the data</a> and map goes here. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis urna magna, maximus nec laoreet sit amet, dictum ultricies nibh. Ut id auctor lacus. Nam a dolor et justo luctus luctus. </p>
+   <p>Additional information about <a href="http://www.rediguana.com/">the Red Iguana</a> can be found here.</p>
 
  </section>
 
@@ -142,7 +142,7 @@
         
         }).addTo(map).bindPopup(popup).openPopup();
     
-    var distance = e.latlng.distanceTo(redIguana);
+        var distance = e.latlng.distanceTo(redIguana);
             
         distance = (distance/1000);
         
@@ -150,13 +150,40 @@
             
         var bounds = map.getBounds();
             
-        var popup = (distance +" kilometers to the Red Iguana" );
+        var popup = ("You are "+ distance +" kilometers from the Red Iguana" );
             
-        marker.getPopup().setContent(distance +" kilometers to the Red Iguana");
+        marker.getPopup().setContent("You are "+ distance +" kilometers from the Red Iguana" );
             
         console.log(distance);
             
-        });
+        
+        
+        
+        
+        marker.on('dragend', function(e) {
+            
+        
+            
+        var marker1 = e.target._latlng;
+            
+        var distance1 = redIguana.distanceTo(marker1);
+            
+        distance1 = (distance1/1000);
+        
+        distance1 = distance1.toFixed(2);
+            
+        var bounds = map.getBounds();
+            
+        var popup = ("You are "+ distance1 +" kilometers from the Red Iguana" );
+            
+        marker.getPopup().setContent("You are "+ distance1 +" kilometers from the Red Iguana" );
+            
+        console.log(distance1);
+    
+               
+    });
+        
+    });
            
         
         
@@ -165,9 +192,9 @@
     
         var redIguanaCircle = L.circle(redIguanaLocation, 25, {
     
-        color: "#d72b1e",  // changes the stroke color
+        color: "#d72b1e",  
     
-        fillColor: "#d72b1e",  // changes the fill color
+        fillColor: "#d72b1e",  
         
         fillOpacity: 1
     

@@ -117,54 +117,46 @@
     var redIguana = L.latLng(40.7718,-111.9124);
         
     L.marker(redIguana, {
+        
         icon : L.icon({
+            
             iconUrl: 'red_iguana.png',
+            
             iconSize: [40, 36]
+        
         })
-        }).addTo(map)
+        
+        }).addTo(map);
         
     
         
-    map.on('click', function(e){
-            
-        var location = e.latlng;
+        var clickPoint = map.on('click', function(e) {
         
-        var marker = L.marker(location, {
-            
+            console.log(e.latlng);
+        
+        L.marker(e.latlng, {
+        
             draggable: true,
+        
             opacity: 10
-        }).addTo(map).bindPopup(popup);
         
-       
-        
-        var distance = redIguana.distanceTo(location);
-        
-        distance = (distance/1000);
-        
-        var props = distance;
-        
-        var popup = buildPopup(props.distance);
+        }).addTo(map).bindPopup(popup).openPopup();
+    
+    var dragDistance = e.latlng.distanceTo(redIguana);
+            
+        dragDistance = (dragDistance/1000);
         
         var bounds = map.getBounds();
             
-        console.log(distance);
+        var popup = (dragDistance +" kilometers to the Red Iguana" );
+            
         
+            
+        console.log(dragDistance);
+            
         });
            
-        function buildPopup(distance){
         
-        if(marker == "true")
-            
-        { var marker = L.marker(location, {
-            
-            draggable: true,
-            opacity: 10
-        }).addTo(map).bindPopup(popup); }
-        
-            
-        return "<b>Population</b>: "
-            
-    }
         
         
                

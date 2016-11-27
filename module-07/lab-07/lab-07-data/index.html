@@ -130,11 +130,11 @@
         
     
         
-        var clickPoint = map.on('click', function(e) {
+        var click = map.on('click', function(e) {
         
             console.log(e.latlng);
         
-        L.marker(e.latlng, {
+        var marker = L.marker(e.latlng, {
         
             draggable: true,
         
@@ -142,67 +142,40 @@
         
         }).addTo(map).bindPopup(popup).openPopup();
     
-    var dragDistance = e.latlng.distanceTo(redIguana);
+    var distance = e.latlng.distanceTo(redIguana);
             
-        dragDistance = (dragDistance/1000);
+        distance = (distance/1000);
         
+        distance = distance.toFixed(2);
+            
         var bounds = map.getBounds();
             
-        var popup = (dragDistance +" kilometers to the Red Iguana" );
+        var popup = (distance +" kilometers to the Red Iguana" );
             
-        
+        marker.getPopup().setContent(distance +" kilometers to the Red Iguana");
             
-        console.log(dragDistance);
+        console.log(distance);
             
         });
            
         
         
         
-               
-   
-        
- 
+        var redIguanaLocation = L.latLng(40.7718,-111.9124);
     
+        var redIguanaCircle = L.circle(redIguanaLocation, 25, {
     
-        
+        color: "#d72b1e",  // changes the stroke color
     
+        fillColor: "#d72b1e",  // changes the fill color
         
-        
-        
-        
-        
+        fillOpacity: 1
     
-        
-        
+        });
     
-    
+        console.log(redIguanaCircle);
         
-    
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        //var redIguanaLocation = L.latLng(40.7718,-111.9124);
-    
-    //var redIguanaCircle = L.circle(redIguanaLocation, 25, {
-    
-    //color: "#d72b1e",  // changes the stroke color
-    
-    //fillColor: "#d72b1e",  // changes the fill color
-        
-    //fillOpacity: 1
-    
-    //});
-    
-    //console.log(redIguanaCircle);
-        
-    //redIguanaCircle.addTo(map);
+        redIguanaCircle.addTo(map);
 
     
     </script>

@@ -6,6 +6,12 @@
     <title>Lab 07 Template</title>
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
 
+    
+    
+    <script src="http://code.jquery.com/jquery-3.1.1.min.js"></script>
+  	<script src="https://unpkg.com/leaflet@1.0.1/dist/leaflet.js"></script>
+
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.css" />
   	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.1/dist/leaflet.css" />
   	<link href="https://fonts.googleapis.com/css?family=Noto+Sans" rel="stylesheet">
@@ -70,14 +76,14 @@
 </head>
 
 <body>
-  <h1>This is the title to my awesome map.</h1>
+  <h1>Find Out How Far Away You Are From the Red Iguana</h1>
 
  <div id='map'></div>
 
  <section>
-   <h2>about this map</h2>
+   <h2>About this map</h2>
 
-   <p>Map authored by me, MY NAME</p>
+   <p>Map authored by Owen Mickelson on November 25, 2016</p>
 
    <p>Additional information about <a href="#">the data</a> and map goes here. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis urna magna, maximus nec laoreet sit amet, dictum ultricies nibh. Ut id auctor lacus. Nam a dolor et justo luctus luctus. </p>
 
@@ -96,66 +102,115 @@
     
     var map = L.map('map', options);
         
-    var tiles = L.tileLayer('http://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+        var tiles = L.tileLayer('http://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
 	maxZoom: 17,
 	attribution: 'Map data: &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
 });
-        
-    tiles.addTo(map);
-        
-    map.setView([40.7718,-111.9124], 7);
-        
-    
-        
-    var bounds = map.getBounds();
-    
-    var myMarker = L.marker([40,-111],{
-            
-    draggable: true,
-    opacity: 10
-    
-    }).addTo(map);
-        
-    myMarker.on('dragend', function(e)
-               
-    { console.log(myMarker.getLatLng());
-    
-    });
 
     
         
+  map.addLayer(tiles);
+        
+    
+    
+    
     var redIguana = L.latLng(40.7718,-111.9124);
-
+        
     L.marker(redIguana, {
         icon : L.icon({
             iconUrl: 'red_iguana.png',
-            iconSize: [50, 45]
+            iconSize: [40, 36]
         })
-    }).addTo(map);
-
+        }).addTo(map)
+        
+    
+        
     map.on('click', function(e){
-
-        console.log(e.latlng);
-
-    });
+            
+        var location = e.latlng;
+        
+        var marker = L.marker(location, {
+            
+            draggable: true,
+            opacity: 10
+        }).addTo(map).bindPopup(popup);
+        
+       
+        
+        var distance = redIguana.distanceTo(location);
+        
+        distance = (distance/1000);
+        
+        var props = distance;
+        
+        var popup = buildPopup(props.distance);
+        
+        var bounds = map.getBounds();
+            
+        console.log(distance);
+        
+        });
+           
+        function buildPopup(distance){
+        
+        if(marker == "true")
+            
+        { var marker = L.marker(location, {
+            
+            draggable: true,
+            opacity: 10
+        }).addTo(map).bindPopup(popup); }
+        
+            
+        return "<b>Population</b>: "
+            
+    }
+        
+        
+               
+   
+        
+ 
+    
+    
         
     
         
-    var redIguanaLocation = L.latLng(40.7718,-111.9124);
-    
-    var redIguanaCircle = L.circle(redIguanaLocation, 25, {
-    
-    color: "#d72b1e",  // changes the stroke color
-    
-    fillColor: "#d72b1e",  // changes the fill color
         
-    fillOpacity: 1
-    
-    });
-    
-    console.log(redIguanaCircle);
         
-    redIguanaCircle.addTo(map);
+        
+        
+    
+        
+        
+    
+    
+        
+    
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        //var redIguanaLocation = L.latLng(40.7718,-111.9124);
+    
+    //var redIguanaCircle = L.circle(redIguanaLocation, 25, {
+    
+    //color: "#d72b1e",  // changes the stroke color
+    
+    //fillColor: "#d72b1e",  // changes the fill color
+        
+    //fillOpacity: 1
+    
+    //});
+    
+    //console.log(redIguanaCircle);
+        
+    //redIguanaCircle.addTo(map);
 
     
     </script>
@@ -163,3 +218,6 @@
 </body>
 
 </html>
+
+
+

@@ -42,19 +42,28 @@
             font-size: 1em;
             color: #001323;
         }
+        img {
+            display: block;
+            margin: 0 auto;
+            height: 300px;
+            width: 1100px;
+        }
     </style>
 </head>
 
 <body>
     <header>
-        <h1>Map Title</h1>
-        <h2>Map Subtitle</h2>
+        <h1>Which Renewable Energy Source Produces the Most Power?</h1>
+        
+        
+        
     </header>
 
     <div id='map'></div>
 
     <footer>
-        <p>Map authored by YOUR NAME</p>
+        <h2>These consist of natural elements</h2>
+        <p>Map authored by Owen Mickelson on December 1, 2016</p>
         <p>Additional information about the data and map goes here.</p>
     </footer>
     <script src="https://unpkg.com/leaflet@1.0.2/dist/leaflet.js"></script>
@@ -78,36 +87,208 @@
     return b.properties.capacity_mw - a.properties.capacity_mw;
       });
         
-      L.geoJson(plants, {
+      // Earth
+        
+        L.geoJson(plants, {
           pointToLayer: function(feature,latlng) {
+              
               return L.circleMarker(latlng, {
-                 color: 'orange',
+                 color: 'lime',
                  weight: 1,
-                 fillColor: 'yellow',
-                 fillOpacity: 1,
+                 fillColor: 'green',
+                 fillOpacity: 10,
                  radius: getRadius(feature.properties.capacity_mw)
+                 
               });
           },
+          
+          filter: function(feature, layer) {
+              if(feature.properties.fuel_source['Geothermal']  
+                 ){
+                  return feature;
+              }
+          },
+          
           onEachFeature : function(feature, layer) {
           
           layer.on('mouseover', function() {
             layer.setStyle({
-            fillColor: 'red'
-      }) 
-      });
+            fillColor: 'lime'
+        });
+          });
+              layer.on('mouseout', function() {
+        layer.setStyle({
+        fillColor: 'green'
+        });
+              });
               
-              layer.on('mouseon', function() {
-              map.addTO(layer);  
-              })
+        layer.bindPopup("<b>"+feature.properties.plant_name+"</b><br>"
+                       +"<b>"+"Total Capacity: "+ "</b>" +feature.properties.capacity_mw+ " Megawatts" +"<br>"
+                       
+                       +"<b>"+"Geothermal : "+ "</b>" +feature.properties.fuel_source['Geothermal'] + " Megawatts");      
+              
           }
       }).addTo(map);
         
         
       function getRadius(area) {
          var radius = Math.sqrt(area/Math.PI);
-         return radius * 0.2;  
+         return radius * 0.8;  
           
       }
+        
+    // Fire    
+        
+        
+    L.geoJson(plants, {
+          pointToLayer: function(feature,latlng) {
+              
+              return L.circleMarker(latlng, {
+                 color: 'red',
+                 weight: 1,
+                 fillColor: 'maroon',
+                 fillOpacity: 10,
+                 radius: getRadius(feature.properties.capacity_mw)
+                 
+              });
+          },
+          
+          filter: function(feature, layer) {
+              if(feature.properties.fuel_source['Solar']  
+                 ){
+                  return feature;
+              }
+          },
+          
+          onEachFeature : function(feature, layer) {
+          
+          layer.on('mouseover', function() {
+            layer.setStyle({
+            fillColor: 'red'
+        });
+          });
+              layer.on('mouseout', function() {
+        layer.setStyle({
+        fillColor: 'maroon'
+        });
+              });
+              
+        layer.bindPopup("<b>"+feature.properties.plant_name+"</b><br>"
+                       +"<b>"+"Total Capacity: "+ "</b>" +feature.properties.capacity_mw+ " Megawatts" +"<br>"
+                       
+                       +"<b>"+"Solar : "+ "</b>" +feature.properties.fuel_source['Solar'] + " Megawatts");      
+              
+          }
+      }).addTo(map);
+        
+        
+      function getRadius(area) {
+         var radius = Math.sqrt(area/Math.PI);
+         return radius * 0.8;  
+          
+      }
+        
+    // Air
+        
+      L.geoJson(plants, {
+          pointToLayer: function(feature,latlng) {
+              
+              return L.circleMarker(latlng, {
+                 color: 'white',
+                 weight: 1,
+                 fillColor: 'yellow',
+                 fillOpacity: 10,
+                 radius: getRadius(feature.properties.capacity_mw)
+                 
+              });
+          },
+          
+          filter: function(feature, layer) {
+              if(feature.properties.fuel_source['Wind']  
+                 ){
+                  return feature;
+              }
+          },
+          
+          onEachFeature : function(feature, layer) {
+          
+          layer.on('mouseover', function() {
+            layer.setStyle({
+            fillColor: 'white'
+        });
+          });
+              layer.on('mouseout', function() {
+        layer.setStyle({
+        fillColor: 'yellow'
+        });
+              });
+              
+        layer.bindPopup("<b>"+feature.properties.plant_name+"</b><br>"
+                       +"<b>"+"Total Capacity: "+ "</b>" +feature.properties.capacity_mw+ " Megawatts" +"<br>"
+                       
+                       +"<b>"+"Wind : "+ "</b>" +feature.properties.fuel_source['Wind'] + " Megawatts");      
+              
+          }
+      }).addTo(map);
+        
+        
+      function getRadius(area) {
+         var radius = Math.sqrt(area/Math.PI);
+         return radius * 0.8;  
+          
+      }
+        
+    // Water
+        
+        
+        L.geoJson(plants, {
+          pointToLayer: function(feature,latlng) {
+              
+              return L.circleMarker(latlng, {
+                 color: 'blue',
+                 weight: 1,
+                 fillColor: 'cyan',
+                 fillOpacity: 10,
+                 radius: getRadius(feature.properties.capacity_mw)
+                 
+              });
+          },
+          
+          filter: function(feature, layer) {
+              if(feature.properties.fuel_source['Hydro']  
+                 ){
+                  return feature;
+              }
+          },
+          
+          onEachFeature : function(feature, layer) {
+          
+          layer.on('mouseover', function() {
+            layer.setStyle({
+            fillColor: 'blue'
+        });
+          });
+              layer.on('mouseout', function() {
+        layer.setStyle({
+        fillColor: 'cyan'
+        });
+              });
+              
+        layer.bindPopup("<b>"+feature.properties.plant_name+"</b><br>"
+                       +"<b>"+"Total Capacity: "+ "</b>" +feature.properties.capacity_mw+ " Megawatts" +"<br>"
+                       
+                       +"<b>"+"Hydro : "+ "</b>" +feature.properties.fuel_source['Hydro'] + " Megawatts");      
+              
+          }
+      }).addTo(map);
+        
+        
+      function getRadius(area) {
+         var radius = Math.sqrt(area/Math.PI);
+         return radius * 0.8;  
+          
+      }
+        
 
 
     </script>

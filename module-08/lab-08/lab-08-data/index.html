@@ -46,14 +46,10 @@
             display: block;
             margin: 0 auto;
             height: 300px;
-            width: 1100px;
+            width: 1075px;
         }
-        legend {
-        display: block;
-        padding-left: 2px;
-        padding-right: 2px;
-        border: none;
-        }
+        
+       
     </style>
 </head>
 
@@ -61,14 +57,22 @@
     <header>
         <h1>Which Renewable Energy Source Produces the Most Power?</h1>
         
+        <img src="Grand_Coulee_Dam_panorama.jpg">
         
+        <p>This photo of the <a href="https://commons.wikimedia.org/wiki/File:Grand_Coulee_Dam_panorama.jpg">Grand Coulee Dam</a> can be found here.</p>
         
     </header>
 
     <div id='map'></div>
+            
+            
 
     <footer>
-        <h2>These consist of natural elements</h2>
+        <h2>Legend</h2>
+        <p><span style='color: green; font-weight: bold;'>Geothermal</span></p>
+        <p><span style='color: maroon; font-weight: bold;'>Solar</span></p>
+        <p><span style='color: yellow; font-weight: bold;'>Wind</span></p>
+        <p><span style='color: cyan; font-weight: bold;'>Hydro</span></p>
         <p>Map authored by Owen Mickelson on December 1, 2016</p>
         <p>Additional information about the data and map goes here.</p>
     </footer>
@@ -76,8 +80,9 @@
     <script src="https://unpkg.com/leaflet@1.0.2/dist/leaflet.js"></script>
     <script src="power-plants.js"></script>
     <script>
-
-      var map = L.map('map', {
+  
+        
+    var map = L.map('map', {
           center: [39,-94],
           zoom: 4,
       });
@@ -101,12 +106,13 @@
               
               return L.circleMarker(latlng, {
                  color: 'lime',
-                 weight: 1,
+                 weight: 4,
                  fillColor: 'green',
                  fillOpacity: 10,
-                 radius: getRadius(feature.properties.capacity_mw)
+                 radius: getRadius(feature.properties.fuel_source['Geothermal'])
                  
               });
+          
           },
           
           filter: function(feature, layer) {
@@ -121,18 +127,22 @@
           layer.on('mouseover', function() {
             layer.setStyle({
             fillColor: 'lime'
+            
         });
           });
               layer.on('mouseout', function() {
         layer.setStyle({
         fillColor: 'green'
+        
         });
               });
               
-        layer.bindPopup("<b>"+feature.properties.plant_name+"</b><br>"
+        var popup = "<b>"+feature.properties.plant_name+"</b><br>"
                        +"<b>"+"Total Capacity: "+ "</b>" +feature.properties.capacity_mw+ " Megawatts" +"<br>"
                        
-                       +"<b>"+"Geothermal : "+ "</b>" +feature.properties.fuel_source['Geothermal'] + " Megawatts");      
+                       +"<b>"+"Geothermal : "+ "</b>" +feature.properties.fuel_source['Geothermal'] + " Megawatts"
+        
+        layer.bindPopup(popup, { sticky: true });
               
           }
       }).addTo(map);
@@ -140,9 +150,12 @@
         
       function getRadius(area) {
          var radius = Math.sqrt(area/Math.PI);
-         return radius * 0.8;  
+         return radius * 0.75;  
           
       }
+                  
+                  
+      
         
     // Fire    
         
@@ -152,10 +165,10 @@
               
               return L.circleMarker(latlng, {
                  color: 'red',
-                 weight: 1,
+                 weight: 4,
                  fillColor: 'maroon',
                  fillOpacity: 10,
-                 radius: getRadius(feature.properties.capacity_mw)
+                 radius: getRadius(feature.properties.fuel_source['Solar'])
                  
               });
           },
@@ -172,18 +185,22 @@
           layer.on('mouseover', function() {
             layer.setStyle({
             fillColor: 'red'
+           
         });
           });
               layer.on('mouseout', function() {
         layer.setStyle({
         fillColor: 'maroon'
+        
         });
               });
               
-        layer.bindPopup("<b>"+feature.properties.plant_name+"</b><br>"
+        var popup = "<b>"+feature.properties.plant_name+"</b><br>"
                        +"<b>"+"Total Capacity: "+ "</b>" +feature.properties.capacity_mw+ " Megawatts" +"<br>"
                        
-                       +"<b>"+"Solar : "+ "</b>" +feature.properties.fuel_source['Solar'] + " Megawatts");      
+                       +"<b>"+"Solar : "+ "</b>" +feature.properties.fuel_source['Solar'] + " Megawatts"
+        
+        layer.bindPopup(popup, { sticky: true });
               
           }
       }).addTo(map);
@@ -191,7 +208,7 @@
         
       function getRadius(area) {
          var radius = Math.sqrt(area/Math.PI);
-         return radius * 0.8;  
+         return radius * 0.75;  
           
       }
         
@@ -202,10 +219,10 @@
               
               return L.circleMarker(latlng, {
                  color: 'white',
-                 weight: 1,
+                 weight: 4,
                  fillColor: 'yellow',
                  fillOpacity: 10,
-                 radius: getRadius(feature.properties.capacity_mw)
+                 radius: getRadius(feature.properties.fuel_source['Wind'])
                  
               });
           },
@@ -222,18 +239,22 @@
           layer.on('mouseover', function() {
             layer.setStyle({
             fillColor: 'white'
+            
         });
           });
               layer.on('mouseout', function() {
         layer.setStyle({
         fillColor: 'yellow'
+       
         });
               });
               
-        layer.bindPopup("<b>"+feature.properties.plant_name+"</b><br>"
+        var popup = "<b>"+feature.properties.plant_name+"</b><br>"
                        +"<b>"+"Total Capacity: "+ "</b>" +feature.properties.capacity_mw+ " Megawatts" +"<br>"
                        
-                       +"<b>"+"Wind : "+ "</b>" +feature.properties.fuel_source['Wind'] + " Megawatts");      
+                       +"<b>"+"Wind : "+ "</b>" +feature.properties.fuel_source['Wind'] + " Megawatts"
+        
+        layer.bindPopup(popup, { sticky: true });
               
           }
       }).addTo(map);
@@ -241,7 +262,7 @@
         
       function getRadius(area) {
          var radius = Math.sqrt(area/Math.PI);
-         return radius * 0.8;  
+         return radius * 0.75;  
           
       }
         
@@ -253,10 +274,10 @@
               
               return L.circleMarker(latlng, {
                  color: 'blue',
-                 weight: 1,
+                 weight: 4,
                  fillColor: 'cyan',
                  fillOpacity: 10,
-                 radius: getRadius(feature.properties.capacity_mw)
+                 radius: getRadius(feature.properties.fuel_source['Hydro'])
                  
               });
           },
@@ -281,10 +302,12 @@
         });
               });
               
-        layer.bindPopup("<b>"+feature.properties.plant_name+"</b><br>"
+        var popup = "<b>"+feature.properties.plant_name+"</b><br>"
                        +"<b>"+"Total Capacity: "+ "</b>" +feature.properties.capacity_mw+ " Megawatts" +"<br>"
                        
-                       +"<b>"+"Hydro : "+ "</b>" +feature.properties.fuel_source['Hydro'] + " Megawatts");      
+                       +"<b>"+"Hydro : "+ "</b>" +feature.properties.fuel_source['Hydro'] + " Megawatts"
+        
+        layer.bindPopup(popup, { sticky: true });
               
           }
       }).addTo(map);
@@ -292,10 +315,11 @@
         
       function getRadius(area) {
          var radius = Math.sqrt(area/Math.PI);
-         return radius * 0.8;  
+         return radius * 0.75;  
           
       }
         
+    
 
 
     </script>

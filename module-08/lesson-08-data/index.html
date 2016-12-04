@@ -47,21 +47,93 @@
 
 <body>
     <header>
-        <h1>Map Title</h1>
-        <h2>Map Subtitle</h2>
+        <h1>Lesson 8</h1>
+        
     </header>
 
     <div id='map'></div>
 
     <footer>
-        <p>Map authored by YOUR NAME</p>
-        <p>Additional information about the data and map goes here.</p>
+        <p>Map authored by Owen Mickelson</p>
+        <p>Map shows coal power plants.</p>
     </footer>
 
     <script src="https://unpkg.com/leaflet@1.0.2/dist/leaflet.js"></script>
+    <script src="power-plants.js"></script>
     <script>
 
-      // build your Leaflet map here!
+      var map = L.map('map', {
+          center: [39,-94],
+          zoom: 4,
+      });
+
+      var tiles = L.tileLayer('http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png', {
+          attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
+          subdomains: 'abcd',
+          maxZoom: 19
+      });
+
+      tiles.addTo(map);
+
+      plants.features.sort(function(a, b) {
+    return b.properties.capacity_mw - a.properties.capacity_mw;
+      });
+        
+      
+        
+        L.geoJson(plants, {
+          pointToLayer: function(feature,latlng) {
+              
+              return L.circleMarker(latlng, {
+                 color: 'orange',
+                 weight: 1,
+                 fillColor: 'orange',
+                 fillOpacity: 3,
+                 radius: getRadius(feature.properties.capacity_mw)
+                
+              });
+          
+          },
+          
+          filter : function(feature, layer) {
+    if(feature.properties.capacity_mw > 100 &&
+        feature.properties.fuel_source.Coal){
+        return feature;   
+    }
+},
+          
+          onEachFeature : function(feature, layer) {
+          
+          layer.on('mouseover', function() {
+            layer.setStyle({
+            fillColor: 'yellow'
+            
+        });
+          });
+              layer.on('mouseout', function() {
+        layer.setStyle({
+        fillColor: 'orange'
+        
+        });
+              });
+              
+        var popup = "<b>"+feature.properties.plant_name+"</b><br>"
+                       +"<b>"+"Total Capacity: "+ "</b>" +feature.properties.capacity_mw+ " Megawatts" +"<br>"
+                       +"<b>"+"Coal : "+ "</b>" +feature.properties.fuel_source['Coal'] + " Megawatts"
+        
+        layer.bindPopup(popup, { sticky: true });
+              
+          }
+      }).addTo(map);
+        
+        
+      function getRadius(area) {
+         var radius = Math.sqrt(area/Math.PI);
+         return radius * 0.4;  
+          
+      }
+        
+        
 
     </script>
 

@@ -144,8 +144,6 @@
 
             distance = distance.toFixed(2);
 
-            var bounds = map.getBounds();
-
             var popup = ("You are " + distance + " miles from the Red Iguana");
 
             marker.getPopup().setContent("You are " + distance + " miles from the Red Iguana");
@@ -166,13 +164,11 @@
 
                 distance1 = distance1.toFixed(2);
 
-                var bounds = map.getBounds();
-
                 var popup = ("You are " + distance1 + " miles from the Red Iguana");
 
                 marker.getPopup().setContent("You are " + distance1 + " miles from the Red Iguana");
 
-                console.log(distance1);
+                marker.openPopup();
 
 
             });
@@ -183,21 +179,14 @@
 
         // Displays red circle around the Red Iguana symbol
 
-        var redIguanaLocation = L.latLng(40.7718, -111.9124);
-
-        var redIguanaCircle = L.circle(redIguanaLocation, 25, {
+        var redIguanaCircle = L.circle(redIguana, 3000, {
 
             color: "#d72b1e",
-
             fillColor: "#d72b1e",
-
             fillOpacity: 1
 
-        });
+        }).addTo(map);
 
-        console.log(redIguanaCircle);
-
-        redIguanaCircle.addTo(map);
     </script>
 
 </body>

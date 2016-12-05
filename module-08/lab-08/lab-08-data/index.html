@@ -3,7 +3,7 @@
 
 <head>
     <meta charset=utf-8 />
-    <title>Lab 08 Starter</title>
+    <title>Renewable Energy Sources</title>
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
 
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.2/dist/leaflet.css" />
@@ -50,7 +50,10 @@
             height: 300px;
             width: 1075px;
         }
-        
+        .image {
+            width: 120px;
+            height: 100px;
+            }
        
     </style>
 </head>
@@ -61,7 +64,7 @@
         
         <img src="Grand_Coulee_Dam_panorama.jpg">
         
-        <p>This photo of the <a href="https://commons.wikimedia.org/wiki/File:Grand_Coulee_Dam_panorama.jpg">Grand Coulee Dam</a> can be found here.</p>
+        <p>The <a href="https://commons.wikimedia.org/wiki/File:Grand_Coulee_Dam_panorama.jpg">Grand Coulee Dam</a> has the highest power capacity of any renewable energy source in the United States.</p>
         
     </header>
 
@@ -69,11 +72,12 @@
             
     <footer>
         <h2>Renewable Energy Sources</h2>
-        <p><span style='color: green; font-weight: bold;'>Geothermal</span>-</p>
-        <p><span style='color: maroon; font-weight: bold;'>Solar</span>-</p>
-        <p><span style='color: yellow; font-weight: bold;'>Wind</span>-</p>
-        <p><span style='color: cyan; font-weight: bold;'>Hydro</span>-</p>
-        <p>Additional information about the data and map goes here.</p>
+        <p><span style='color: green; font-weight: bold;'>Geothermal</span>- capacity ranges from 0 megawatts to 800 megawatts</p>
+        <p><span style='color: maroon; font-weight: bold;'>Solar</span>- capacity ranges from 0 megawatts to 350 megawatts</p>
+        <p><span style='color: yellow; font-weight: bold;'>Wind</span>- capacity ranges from 0 megawatts to 750 megawatts</p>
+        <p><span style='color: blue; font-weight: bold;'>Hydro</span>- capacity ranges from 0 megawatts to 7000 megawatts</p>
+        <h3>Additional Infomation About Renewable Energy Sources</h3>
+        <p>When it comes to renewable energy sources for the United States, most of them do not produce as much energy as traditional non renewable energy sources such as coal or other fossil fuels. On this map, it is clearly shown which sources give the most energy. Hydro power plants in the form of dams produce the most energy by far. However, wind produces a pretty large amount of energy as well which is comparable to hydro. Most geothermal power plants in the United States do not produce that much power as shown and there are not many of them in the United States when compared to other power sources. Solar power produces the least amount of energy in America in most places. All of the renewable energy source power plants are dependant on the environment. We notice that hydro works best in areas with large rivers and water flowage. Wind does best in flat plain areas like the midwest regions. Geothermal power is really only seen in the western regions of America with a lot of geologic activity. Solar power is set up all over the United States but is shown to give the most power in the southwest where the sun is more prominent. Overall, if the United States as a nation were to switch over from fossil fuels to renewable energy source, water and air would have the greatest supply of power for the country.</p>
         <p>Map authored by Owen Mickelson on December 1, 2016</p>
         
     </footer>
@@ -96,51 +100,64 @@
 
       tiles.addTo(map);
 
-      plants.features.sort(function(a, b) {
+    //Sorts all power plants in the GeoJson  
+        
+    plants.features.sort(function(a, b) {
     return b.properties.capacity_mw - a.properties.capacity_mw;
       });
         
-      // Earth
+      // Geothermal
+        
+        //Creates GeoJson function
         
         L.geoJson(plants, {
           pointToLayer: function(feature,latlng) {
               
               return L.circleMarker(latlng, {
-                 color: 'lime',
+                 color: 'green',
                  weight: 4,
-                 fillColor: 'green',
+                 fillColor: 'lime',
                  fillOpacity: 10,
-                 radius: getRadius(feature.properties.fuel_source['Geothermal'])
+                 radius: getRadius(feature.properties.fuel_source['Geothermal']),
+                 image: "Geothermal-energy-in-Kenya.jpg",
+                 link: "http://constructionreviewonline.com/2016/02/geothermal-energy-source-electricity-uganda-tanzania/"
                  
               });
           
           },
           
-          filter: function(feature, layer) {
+          //Filters data to one type of power source
+            
+            filter: function(feature, layer) {
               if(feature.properties.fuel_source['Geothermal']  
                  ){
                   return feature;
               }
           },
           
-          onEachFeature : function(feature, layer) {
+          //Mouse function with points on the map
+            
+            onEachFeature : function(feature, layer) {
           
           layer.on('mouseover', function() {
             layer.setStyle({
-            fillColor: 'lime'
+            fillColor: 'green'
             
         });
           });
               layer.on('mouseout', function() {
         layer.setStyle({
-        fillColor: 'green'
+        fillColor: 'lime'
         
         });
               });
               
-        var popup = "<b>"+feature.properties.plant_name+"</b><br>"
-                       +"<b>"+"Total Capacity: "+ "</b>" +feature.properties.capacity_mw+ " Megawatts" +"<br>"
-                       +"<b>"+"Geothermal : "+ "</b>" +feature.properties.fuel_source['Geothermal'] + " Megawatts"
+        //Displays popup with features outlined
+                
+        var popup = "<img class='image' src='"+"Geothermal-energy-in-Kenya.jpg"+"'><br>" +
+            "<a href='"+"http://constructionreviewonline.com/2016/02/geothermal-energy-source-electricity-uganda-tanzania/"+"'>Photo Source</a><br>"+ "<b>"+feature.properties.plant_name+"</b><br>"
+            +"<b>"+"Total Capacity: "+ "</b>" +feature.properties.capacity_mw+ " Megawatts" +"<br>"
+            +"<b>"+"Geothermal : "+ "</b>" +feature.properties.fuel_source['Geothermal'] + " Megawatts"
         
         layer.bindPopup(popup, { sticky: true });
               
@@ -148,28 +165,31 @@
       }).addTo(map);
         
         
-      function getRadius(area) {
+     //Calculates proportions of each point on the map
+        
+     function getRadius(area) {
          var radius = Math.sqrt(area/Math.PI);
          return radius * 0.75;  
           
       }
                   
                   
-      
+    //The rest of the code follows the same pattern  
         
-    // Fire    
+    // Solar   
         
         
     L.geoJson(plants, {
           pointToLayer: function(feature,latlng) {
               
               return L.circleMarker(latlng, {
-                 color: 'red',
+                 color: 'maroon',
                  weight: 4,
-                 fillColor: 'maroon',
+                 fillColor: 'red',
                  fillOpacity: 10,
-                 radius: getRadius(feature.properties.fuel_source['Solar'])
-                 
+                 radius: getRadius(feature.properties.fuel_source['Solar']),
+                 image: "Solar_Power.jpg",
+                 link: "http://www.conserve-energy-future.com/SolarEnergy.php"
               });
           },
           
@@ -184,20 +204,20 @@
           
           layer.on('mouseover', function() {
             layer.setStyle({
-            fillColor: 'red'
+            fillColor: 'maroon'
            
         });
           });
               layer.on('mouseout', function() {
         layer.setStyle({
-        fillColor: 'maroon'
+        fillColor: 'red'
         
         });
               });
               
-        var popup = "<b>"+feature.properties.plant_name+"</b><br>"
-                       +"<b>"+"Total Capacity: "+ "</b>" +feature.properties.capacity_mw+ " Megawatts" +"<br>"
-                       +"<b>"+"Solar : "+ "</b>" +feature.properties.fuel_source['Solar'] + " Megawatts"
+        var popup = "<img class='image' src='"+"Solar_Power.jpg"+"'><br>" +
+            "<a href='"+"http://www.conserve-energy-future.com/SolarEnergy.php"+"'>Photo Source</a><br>"+"<b>"+feature.properties.plant_name+"</b><br>"+"<b>"+"Total Capacity: "+ "</b>" +feature.properties.capacity_mw+ " Megawatts" +"<br>"
+            +"<b>"+"Solar : "+ "</b>" +feature.properties.fuel_source['Solar'] + " Megawatts"
         
         layer.bindPopup(popup, { sticky: true });
               
@@ -211,18 +231,19 @@
           
       }
         
-    // Air
+    // Wind
         
       L.geoJson(plants, {
           pointToLayer: function(feature,latlng) {
               
               return L.circleMarker(latlng, {
-                 color: 'white',
+                 color: 'yellow',
                  weight: 4,
-                 fillColor: 'yellow',
+                 fillColor: 'white',
                  fillOpacity: 10,
-                 radius: getRadius(feature.properties.fuel_source['Wind'])
-                 
+                 radius: getRadius(feature.properties.fuel_source['Wind']),
+                 image: "download.jpg",
+                 link: "https://www.populationeducation.org/content/what-are-pros-and-cons-solar-and-wind-energy"
               });
           },
           
@@ -237,20 +258,22 @@
           
           layer.on('mouseover', function() {
             layer.setStyle({
-            fillColor: 'white'
+            fillColor: 'yellow'
             
         });
           });
               layer.on('mouseout', function() {
         layer.setStyle({
-        fillColor: 'yellow'
+        fillColor: 'white'
        
         });
               });
               
-        var popup = "<b>"+feature.properties.plant_name+"</b><br>"
-                       +"<b>"+"Total Capacity: "+ "</b>" +feature.properties.capacity_mw+ " Megawatts" +"<br>"
-                       +"<b>"+"Wind : "+ "</b>" +feature.properties.fuel_source['Wind'] + " Megawatts"
+        var popup = "<img class='image' src='"+"download.jpg"+"'><br>" +
+            "<a href='"+"https://www.populationeducation.org/content/what-are-pros-and-cons-solar-and-wind-energy"+"'>Photo Source</a><br>"
+            +"<b>"+feature.properties.plant_name+"</b><br>"
+            +"<b>"+"Total Capacity: "+ "</b>" +feature.properties.capacity_mw+ " Megawatts" +"<br>"
+            +"<b>"+"Wind : "+ "</b>" +feature.properties.fuel_source['Wind'] + " Megawatts"
         
         layer.bindPopup(popup, { sticky: true });
               
@@ -264,7 +287,7 @@
           
       }
         
-    // Water
+    // Hydro
         
         
         L.geoJson(plants, {
@@ -275,8 +298,9 @@
                  weight: 4,
                  fillColor: 'cyan',
                  fillOpacity: 10,
-                 radius: getRadius(feature.properties.fuel_source['Hydro'])
-                 
+                 radius: getRadius(feature.properties.fuel_source['Hydro']),
+                 image: "images.jpg",
+                 link: "https://www.emaze.com/@AORRQLIQ/"
               });
           },
           
@@ -300,9 +324,11 @@
         });
               });
               
-        var popup = "<b>"+feature.properties.plant_name+"</b><br>"
-                       +"<b>"+"Total Capacity: "+ "</b>" +feature.properties.capacity_mw+ " Megawatts" +"<br>"
-                       +"<b>"+"Hydro : "+ "</b>" +feature.properties.fuel_source['Hydro'] + " Megawatts"
+        var popup = "<img class='image' src='"+"images.jpg"+"'><br>" +
+            "<a href='"+"https://www.emaze.com/@AORRQLIQ/"+"'>Photo Source</a><br>"
+            +"<b>"+feature.properties.plant_name+"</b><br>"
+            +"<b>"+"Total Capacity: "+ "</b>" +feature.properties.capacity_mw+ " Megawatts" +"<br>"
+            +"<b>"+"Hydro : "+ "</b>" +feature.properties.fuel_source['Hydro'] + " Megawatts"
         
         layer.bindPopup(popup, { sticky: true });
               

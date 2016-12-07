@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset=utf-8 />
+    <title>Lesson 9</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.2/dist/leaflet.css" />
+    <link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: whitesmoke;
+            font-family: Lato, sans-serif;
+            color: #0D0000;
+        }
+        header {
+            padding: 6px 10%;
+        }
+        h1 {
+            display: inline-block;
+            margin-right: 20px;
+            color: #001323;
+        }
+        h2 {
+            display: inline-block;
+            color: #001323;
+        }
+        #map {
+            width: 80%;
+            height: 540px;
+            margin: 10px auto;
+        }
+        footer {
+            padding: 6px 10%;
+            width: 80%;
+        }
+        p {
+            font-size: 1em;
+            color: #001323;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Map Title</h1>
+        <h2>Map Subtitle</h2>
+    </header>
+
+    <div id='map'></div>
+
+    <footer>
+        <p>Map authored by Owen Mickelson</p>
+        <p>This is my lesson part of module 9.</p>
+    </footer>
+
+    <script src="https://unpkg.com/leaflet@1.0.2/dist/leaflet.js"></script>
+    <script src="power-plants.js"></script>
+    <script>
+
+       var map = L.map('map', {
+          center: [36,-94],
+          zoom: 4,
+      });
+
+      var tiles = L.tileLayer('http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png', {
+          attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
+          subdomains: 'abcd',
+          maxZoom: 19
+      });
+
+      tiles.addTo(map);
+        
+        
+      var hydroLayer = L.geoJson(plants, {
+    pointToLayer: function(feature,latlng) {
+        return L.circleMarker(latlng);
+    },
+    filter: function(feature) {
+        if(feature.properties.fuel_source.Hydro) {
+            return feature;
+        }
+    },
+    style: function(feature) {
+        return {
+            color: '#1f78b4',
+            fillColor: '#1f78b4',
+            weight: 1,
+            stroke: 1,
+            fillOpacity: .8,
+            radius: getRadius(feature.properties.fuel_source.Hydro)
+        }
+    }
+}).addTo(map);
+
+map.on('click', function(e) {
+    hydroLayer.eachLayer(function(layer) {
+        var distance = e.latlng.distanceTo(layer.getLatLng())/1000; // distance as km
+
+        if(distance > 500) {
+            layer.setStyle({
+                stroke: false,
+                fill: false
+            });  
+        } else {
+            layer.setStyle({
+                stroke: true,
+                fill: true  
+            });
+        layer.bindPopup("I am <b>"+distance.toLocaleString()+
+                            "km</b><br> from the click point.");
+        }
+    });
+});
+        
+hydroLayer.eachLayer(function(layer) {
+    // code goes here
+    console.log(layer);
+});
+        
+hydroLayer.setStyle({
+    color: '#a5c9e2',
+    fillColor: '#a5c9e2'
+});
+        
+function getRadius(val) {
+    var radius = Math.sqrt(val/Math.PI);
+    return radius * .8;   
+}
+
+    </script>
+
+</body>
+
+</html>

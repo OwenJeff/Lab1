@@ -131,7 +131,7 @@ L.control.layers(null, sourcesLabels, { collapsed:false }).addTo(map);
         map.on('click', function(e) {
          for(var layer in layerInfo) {   
     geoJsonLayers[layer].eachLayer(function(layer) {
-        var distance = e.latlng.distanceTo(layer.getLatLng())/1000;
+        var distance = e.latlng.distanceTo(layer.getLatLng())/1609.34;
 
         if(distance > 500) {
             layer.setStyle({
@@ -143,9 +143,15 @@ L.control.layers(null, sourcesLabels, { collapsed:false }).addTo(map);
                 stroke: true,
                 fill: true  
             });  
-            layer.bindPopup("I am <b>"+distance.toLocaleString()+
-                            "km</b><br> from the click point.");
-        
+            
+            {
+            var layers = "<b>" + layer.feature.properties.plant_name + "</b><br>";
+            for (source in layer.feature.properties.fuel_source) {
+            layers += '<b>' + source + '</b>: ' + layer.feature.properties.fuel_source[source] + " Megawatts" +'</b><br>'
+            }
+            layers += "<b>Distance</b>: " + distance.toFixed(2) + " miles</b><br> from the click point"
+            layer.bindPopup(layers);
+            }
         }
     });
          }

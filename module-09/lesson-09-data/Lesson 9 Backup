@@ -3,7 +3,7 @@
 
 <head>
     <meta charset=utf-8 />
-    <title>Lab 9</title>
+    <title>Lesson 9</title>
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
 
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.2/dist/leaflet.css" />
@@ -54,8 +54,8 @@
     <div id='map'></div>
 
     <footer>
-        <p>Map authored by Owen Mickelson on December 6, 2016</p>
-        <p>Additional information about the data and map goes here.</p>
+        <p>Map authored by Owen Mickelson</p>
+        <p>This is my lesson part of module 9.</p>
     </footer>
 
     <script src="https://unpkg.com/leaflet@1.0.2/dist/leaflet.js"></script>
@@ -75,20 +75,15 @@
 
       tiles.addTo(map);
         
-        plants.features.sort(function(a, b) {
-           return b.properties.capacity_mw - a.properties.capacity_mw; 
-        });
-        
-         var commonStyles = {
+    var commonStyles = {
         weight: 1,
         stroke: 1,
         fillOpacity: .8
 }
 
 var layerInfo = {
-    coalLayer: {source:"Coal", color:'orange'},
-    naturalgasLayer: {source:"Natural Gas", color:'red'},
-    petroleumLayer: {source:"Petroleum", color:'yellow'}
+    hydroLayer: {source:"Hydro", color:'#1f78b4'},
+    windLayer: {source:"Wind", color:'#a6cee3'}
 };
 
 var geoJsonLayers = {};
@@ -119,17 +114,14 @@ function getRadius(val) {
 }
 
 var sourcesLabels = {
-    "<b style='color:orange'>Coal</b>": geoJsonLayers.coalLayer,
-    "<b style='color:red'>Natural Gas</b>": geoJsonLayers.naturalgasLayer,
-    "<b style='color:yellow'>Petroleum</b>": geoJsonLayers.petroleumLayer
+    "<b style='color:#1f78b4'>Hydro</b>": geoJsonLayers.hydroLayer,
+    "<b style='color:#a6cee3'>Wind</b>": geoJsonLayers.windLayer
 }
 
 L.control.layers(null, sourcesLabels, { collapsed:false }).addTo(map);
         
-     
         
         map.on('click', function(e) {
-         for(var layer in layerInfo) {   
     geoJsonLayers[layer].eachLayer(function(layer) {
         var distance = e.latlng.distanceTo(layer.getLatLng())/1000;
 
@@ -143,17 +135,10 @@ L.control.layers(null, sourcesLabels, { collapsed:false }).addTo(map);
                 stroke: true,
                 fill: true  
             });  
-            layer.bindPopup("<b>"+layer.feature.properties.plant_name+"</b><br>"+
-                            "<b>"+layer.feature.properties.fuel_source[layerInfo[layer]]+"</b><br>"+
-                            "<b>"+layer.feature.properties.capacity_mw+ " Megawatts" +"</b><br>"+
-                            "I am <b>"+distance.toLocaleString()+
+            layer.bindPopup("I am <b>"+distance.toLocaleString()+
                             "km</b><br> from the click point.");
-            
-            
-        
         }
     });
-         }
 });
 
     </script>

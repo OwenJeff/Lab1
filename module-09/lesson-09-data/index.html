@@ -75,6 +75,19 @@
 
       tiles.addTo(map);
         
+      var radiusCircle = L.circle([0, 0], 500000, {
+          fillColor: 'white',
+          fillOpacity: .1,
+          color: 'yellow',
+          opacity: .3,
+          stroke: false,
+          weight: 3,
+        }).addTo(map);
+        
+        plants.features.sort(function(a, b) {
+           return b.properties.capacity_mw - a.properties.capacity_mw; 
+        });
+        
     var commonStyles = {
         weight: 1,
         stroke: 1,
@@ -83,7 +96,8 @@
 
 var layerInfo = {
     hydroLayer: {source:"Hydro", color:'#1f78b4'},
-    windLayer: {source:"Wind", color:'#a6cee3'}
+    windLayer: {source:"Wind", color:'#a6cee3'},
+    solarLayer: {source:"Solar", color:'yellow'}
 };
 
 var geoJsonLayers = {};
@@ -107,6 +121,8 @@ for(var layer in layerInfo) {
         }
     }).addTo(map);        
     }
+        
+        console.log(geoJsonLayers);
 
 function getRadius(val) {
     var radius = Math.sqrt(val/Math.PI);
@@ -115,14 +131,44 @@ function getRadius(val) {
 
 var sourcesLabels = {
     "<b style='color:#1f78b4'>Hydro</b>": geoJsonLayers.hydroLayer,
-    "<b style='color:#a6cee3'>Wind</b>": geoJsonLayers.windLayer
+    "<b style='color:#a6cee3'>Wind</b>": geoJsonLayers.windLayer,
+    "<b style='color:yellow'>Solar</b>": geoJsonLayers.solarLayer
 }
 
 L.control.layers(null, sourcesLabels, { collapsed:false }).addTo(map);
         
         
+        var allLayers = L.geoJson(plants);
+        
         map.on('click', function(e) {
-    geoJsonLayers[layer].eachLayer(function(layer) {
+            
+        var stats = {};
+            
+        allLayers.eachLayer(function(layer){
+            var distance = e.latlng.distanceTo(layer.getLatLng())/1000;
+            if(distance <= 500){
+                var props = layer.feature.properties;
+                for(var source in props.fuel_source){
+                    if(stats[source]){
+                       stats[source] += props.fuel_source[source]; 
+                    } else {
+                    stats[source] = props.fuel_source[source];    
+                    }
+                }
+            }
+        })
+            
+        radiusCircle.setLatLng(e.latlng);
+        
+        var statsContent = '';
+        for(stat in stats){
+            statsContent += stat + ': ' + stats[stat].toLocaleString() + 'MW<br>'
+        }
+            
+        radiusCircle.bindPopup(statsContent).openPopup();
+        
+        for(var l in layerInfo) {
+            geoJsonLayers[l].eachLayer(function(layer) {
         var distance = e.latlng.distanceTo(layer.getLatLng())/1000;
 
         if(distance > 500) {
@@ -135,10 +181,19 @@ L.control.layers(null, sourcesLabels, { collapsed:false }).addTo(map);
                 stroke: true,
                 fill: true  
             });  
-            layer.bindPopup("I am <b>"+distance.toLocaleString()+
-                            "km</b><br> from the click point.");
+            
+            var props = layer.feature.properties;
+            var content = props.plant_name + "<br>";
+            
+            content += layerInfo[l].source + '' +props.fuel_source[layerInfo[l].source].toLocaleString()+ "<br>";
+            
+            content += "I am <b>"+distance.toLocaleString()+
+                            "km</b><br> from the click point."
+            
+            layer.bindPopup(content);
         }
     });
+        } //end for loop
 });
 
     </script>

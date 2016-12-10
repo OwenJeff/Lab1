@@ -3,7 +3,7 @@
 
 <head>
     <meta charset=utf-8 />
-    <title>Lab 9</title>
+    <title>Fossil Fuel Power Plants</title>
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
 
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.2/dist/leaflet.css" />
@@ -47,22 +47,24 @@
 
 <body>
     <header>
-        <h1>Map Title</h1>
-        <h2>Map Subtitle</h2>
+        <h1>Fossil Fuel Power Plants</h1>
+        <h2>Coal, Petroleum, and Natural Gas</h2>
     </header>
 
     <div id='map'></div>
 
     <footer>
-        <p>Map authored by Owen Mickelson on December 6, 2016</p>
-        <p>Additional information about the data and map goes here.</p>
+        <p>Map authored by Owen Mickelson on December 10, 2016</p>
+        <p>This is my lab part of module 9.</p>
     </footer>
 
     <script src="https://unpkg.com/leaflet@1.0.2/dist/leaflet.js"></script>
     <script src="power-plants.js"></script>
     <script>
 
-       var map = L.map('map', {
+    // Displays the map   
+        
+        var map = L.map('map', {
           center: [36,-94],
           zoom: 4,
       });
@@ -75,34 +77,61 @@
 
       tiles.addTo(map);
         
+    // Properties of the hollow circle  
+        
+    var radiusCircle = L.circle([0, 0], 500000, {
+          fillColor: 'white',
+          fillOpacity: .1,
+          color: 'yellow',
+          opacity: .3,
+          stroke: false,
+          weight: 3,
+        }).addTo(map);
+        
+    // Sorts all the plants    
+        
         plants.features.sort(function(a, b) {
            return b.properties.capacity_mw - a.properties.capacity_mw; 
         });
         
-         var commonStyles = {
+    // Styles of the map points     
+        
+    var commonStyles = {
         weight: 1,
         stroke: 1,
         fillOpacity: .8
 }
 
-var layerInfo = {
+    // Give info for the layers
+
+    var layerInfo = {
     coalLayer: {source:"Coal", color:'orange'},
     naturalgasLayer: {source:"Natural Gas", color:'red'},
     petroleumLayer: {source:"Petroleum", color:'yellow'}
 };
 
-var geoJsonLayers = {};
+    // Creates blank variable for fuel layers
+        
+    var geoJsonLayers = {};
 
-for(var layer in layerInfo) {     
+    // Creates a loop for the fuel layers
+        
+    for(var layer in layerInfo) {     
     geoJsonLayers[layer] = L.geoJson(plants, {
         pointToLayer: function(feature,latlng) {
             return L.circleMarker(latlng, commonStyles);
         },
+        
+    // Filters the fuel layers    
+        
         filter: function(feature) {
             if(feature.properties.fuel_source[layerInfo[layer].source]) {
                 return feature;
             }
         },
+    
+    // Puts colors on each fuel layer within the loop     
+        
         style: function(feature) {
             return {
                 color: layerInfo[layer].color,
@@ -112,28 +141,71 @@ for(var layer in layerInfo) {
         }
     }).addTo(map);        
     }
+        
+        console.log(geoJsonLayers);
 
-function getRadius(val) {
+    // Sizes the circle point appropriatly
+        
+    function getRadius(val) {
     var radius = Math.sqrt(val/Math.PI);
     return radius * .8;   
 }
 
-var sourcesLabels = {
+    // Helps to control label of each layer
+        
+    var sourcesLabels = {
     "<b style='color:orange'>Coal</b>": geoJsonLayers.coalLayer,
     "<b style='color:red'>Natural Gas</b>": geoJsonLayers.naturalgasLayer,
     "<b style='color:yellow'>Petroleum</b>": geoJsonLayers.petroleumLayer
 }
 
-L.control.layers(null, sourcesLabels, { collapsed:false }).addTo(map);
+    // Sets control parameter to source labels
+    
+    L.control.layers(null, sourcesLabels, { collapsed:false }).addTo(map);
         
-     
+        
+    // The click function that invokes the hollow circle    
+        
+        var allLayers = L.geoJson(plants);
         
         map.on('click', function(e) {
-         for(var layer in layerInfo) {   
-    geoJsonLayers[layer].eachLayer(function(layer) {
+            
+        var stats = {};
+            
+    // Loops through each fuel type in the hollow circle radius
+            
+        allLayers.eachLayer(function(layer){
+            var distance = e.latlng.distanceTo(layer.getLatLng())/1609.34;
+            if(distance <= 300){
+                var props = layer.feature.properties;
+                for(var source in props.fuel_source){
+                    if(stats[source]){
+                       stats[source] += props.fuel_source[source]; 
+                    } else {
+                    stats[source] = props.fuel_source[source];    
+                    }
+                }
+            }
+        })
+            
+        radiusCircle.setLatLng(e.latlng);
+        
+    // Makes popup for hollow circle
+            
+        var statsContent = '';
+        for(stat in stats){
+            statsContent += stat + ': ' + stats[stat].toLocaleString() + ' MegaWatts<br>'
+        }
+            
+        radiusCircle.bindPopup(statsContent).openPopup();
+        
+    // Loops through each fuel type point on the map
+            
+        for(var l in layerInfo) {
+            geoJsonLayers[l].eachLayer(function(layer) {
         var distance = e.latlng.distanceTo(layer.getLatLng())/1609.34;
 
-        if(distance > 500) {
+        if(distance > 300) {
             layer.setStyle({
                 stroke: false,
                 fill: false
@@ -144,17 +216,22 @@ L.control.layers(null, sourcesLabels, { collapsed:false }).addTo(map);
                 fill: true  
             });  
             
-            {
-            var layers = "<b>" + layer.feature.properties.plant_name + "</b><br>";
+    // Makes popup for each fuel type point
+            
+            var props = layer.feature.properties;
+            var content = props.plant_name + "<br>";
+            
             for (source in layer.feature.properties.fuel_source) {
-            layers += '<b>' + source + '</b>: ' + layer.feature.properties.fuel_source[source] + " Megawatts" +'</b><br>'
+            content += '<b>' + source + '</b>: ' + layer.feature.properties.fuel_source[source].toLocaleString() + " MegaWatts" +'</b><br>'
             }
-            layers += "<b>Distance</b>: " + distance.toFixed(2) + " miles</b><br> from the click point"
-            layer.bindPopup(layers);
-            }
+            
+            content += "I am <b>"+distance.toFixed(2)+
+                            " miles</b><br> from the click point."
+            
+            layer.bindPopup(content);
         }
     });
-         }
+        } //end for loops of Lab 9 map
 });
 
     </script>

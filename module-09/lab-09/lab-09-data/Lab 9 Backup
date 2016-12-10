@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset=utf-8 />
+    <title>Lab 9</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.2/dist/leaflet.css" />
+    <link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: whitesmoke;
+            font-family: Lato, sans-serif;
+            color: #0D0000;
+        }
+        header {
+            padding: 6px 10%;
+        }
+        h1 {
+            display: inline-block;
+            margin-right: 20px;
+            color: #001323;
+        }
+        h2 {
+            display: inline-block;
+            color: #001323;
+        }
+        #map {
+            width: 80%;
+            height: 540px;
+            margin: 10px auto;
+        }
+        footer {
+            padding: 6px 10%;
+            width: 80%;
+        }
+        p {
+            font-size: 1em;
+            color: #001323;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Map Title</h1>
+        <h2>Map Subtitle</h2>
+    </header>
+
+    <div id='map'></div>
+
+    <footer>
+        <p>Map authored by Owen Mickelson on December 6, 2016</p>
+        <p>Additional information about the data and map goes here.</p>
+    </footer>
+
+    <script src="https://unpkg.com/leaflet@1.0.2/dist/leaflet.js"></script>
+    <script src="power-plants.js"></script>
+    <script>
+
+       var map = L.map('map', {
+          center: [36,-94],
+          zoom: 4,
+      });
+
+      var tiles = L.tileLayer('http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png', {
+          attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
+          subdomains: 'abcd',
+          maxZoom: 19
+      });
+
+      tiles.addTo(map);
+        
+        plants.features.sort(function(a, b) {
+           return b.properties.capacity_mw - a.properties.capacity_mw; 
+        });
+        
+         var commonStyles = {
+        weight: 1,
+        stroke: 1,
+        fillOpacity: .8
+}
+
+var layerInfo = {
+    coalLayer: {source:"Coal", color:'orange'},
+    naturalgasLayer: {source:"Natural Gas", color:'red'},
+    petroleumLayer: {source:"Petroleum", color:'yellow'}
+};
+
+var geoJsonLayers = {};
+
+for(var layer in layerInfo) {     
+    geoJsonLayers[layer] = L.geoJson(plants, {
+        pointToLayer: function(feature,latlng) {
+            return L.circleMarker(latlng, commonStyles);
+        },
+        filter: function(feature) {
+            if(feature.properties.fuel_source[layerInfo[layer].source]) {
+                return feature;
+            }
+        },
+        style: function(feature) {
+            return {
+                color: layerInfo[layer].color,
+                fillColor: layerInfo[layer].color,
+                radius: getRadius(feature.properties.fuel_source[layerInfo[layer].source])
+            }
+        }
+    }).addTo(map);        
+    }
+
+function getRadius(val) {
+    var radius = Math.sqrt(val/Math.PI);
+    return radius * .8;   
+}
+
+var sourcesLabels = {
+    "<b style='color:orange'>Coal</b>": geoJsonLayers.coalLayer,
+    "<b style='color:red'>Natural Gas</b>": geoJsonLayers.naturalgasLayer,
+    "<b style='color:yellow'>Petroleum</b>": geoJsonLayers.petroleumLayer
+}
+
+L.control.layers(null, sourcesLabels, { collapsed:false }).addTo(map);
+        
+     
+        
+        map.on('click', function(e) {
+         for(var layer in layerInfo) {   
+    geoJsonLayers[layer].eachLayer(function(layer) {
+        var distance = e.latlng.distanceTo(layer.getLatLng())/1609.34;
+
+        if(distance > 500) {
+            layer.setStyle({
+                stroke: false,
+                fill: false
+            });  
+        } else {
+            layer.setStyle({
+                stroke: true,
+                fill: true  
+            });  
+            
+            {
+            var layers = "<b>" + layer.feature.properties.plant_name + "</b><br>";
+            for (source in layer.feature.properties.fuel_source) {
+            layers += '<b>' + source + '</b>: ' + layer.feature.properties.fuel_source[source] + " Megawatts" +'</b><br>'
+            }
+            layers += "<b>Distance</b>: " + distance.toFixed(2) + " miles</b><br> from the click point"
+            layer.bindPopup(layers);
+            }
+        }
+    });
+         }
+});
+
+    </script>
+
+</body>
+
+</html>

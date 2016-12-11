@@ -13,7 +13,7 @@
         body {
             margin: 0;
             padding: 0;
-            background: whitesmoke;
+            background: yellow;
             font-family: Lato, sans-serif;
             color: #0D0000;
         }
@@ -48,14 +48,15 @@
 <body>
     <header>
         <h1>Fossil Fuel Power Plants</h1>
+        
         <h2>Coal, Petroleum, and Natural Gas</h2>
     </header>
 
     <div id='map'></div>
 
     <footer>
+        <p>Shown on this map are the main fossil fuel power plants that are used in the United States. Coal, petroleum, and natural gas are amoung the largest producers of power in America in megawatts. Coal and natural gas by far have the lead in the most power produced in the United States. Petroleum mainly produces a lot of power along the east coast. In fact, there are more of these types of power plants that exist in the eastern half of the United States as opposed to the western half.</p>
         <p>Map authored by Owen Mickelson on December 10, 2016</p>
-        <p>This is my lab part of module 9.</p>
     </footer>
 
     <script src="https://unpkg.com/leaflet@1.0.2/dist/leaflet.js"></script>
@@ -167,6 +168,8 @@
     // The click function that invokes the hollow circle    
         
         var allLayers = L.geoJson(plants);
+            
+        
         
         map.on('click', function(e) {
             
@@ -176,7 +179,7 @@
             
         allLayers.eachLayer(function(layer){
             var distance = e.latlng.distanceTo(layer.getLatLng())/1609.34;
-            if(distance <= 300){
+            if(distance <= 500){
                 var props = layer.feature.properties;
                 for(var source in props.fuel_source){
                     if(stats[source]){

@@ -47,8 +47,8 @@
 
 <body>
     <header>
-        <h1>Map Title</h1>
-        <h2>Map Subtitle</h2>
+        <h1>Lesson 9</h1>
+        <h2>Referenced from Lesson 9 video</h2>
     </header>
 
     <div id='map'></div>
@@ -162,7 +162,7 @@ L.control.layers(null, sourcesLabels, { collapsed:false }).addTo(map);
         
         var statsContent = '';
         for(stat in stats){
-            statsContent += stat + ': ' + stats[stat].toLocaleString() + 'MW<br>'
+            statsContent += stat + ': ' + stats[stat].toLocaleString() + ' MW<br>'
         }
             
         radiusCircle.bindPopup(statsContent).openPopup();

@@ -6,205 +6,189 @@
     <title>Lab 07 Template</title>
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
 
-    
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.css" />
-  	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.1/dist/leaflet.css" />
-  	<link href="https://fonts.googleapis.com/css?family=Noto+Sans" rel="stylesheet">
-  	<link href="https://fonts.googleapis.com/css?family=Lora" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.1/dist/leaflet.css" />
+    <link href="https://fonts.googleapis.com/css?family=Noto+Sans" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lora" rel="stylesheet">
 
     <style>
-  		body {
-  			margin: 0;
-  			padding: 0;
-  			background: orange;
-  			font-family: "Noto Sans", sans-serif;
-  			color: #000000;
-  		}
+        body {
+            margin: 0;
+            padding: 0;
+            background: orange;
+            font-family: "Noto Sans", sans-serif;
+            color: #000000;
+        }
 
-      	section {
-  			width: 960px;
-  			margin: 20px auto;
-  		}
+        section {
+            width: 960px;
+            margin: 20px auto;
+        }
 
-  		h1 {
-  			width: 960px;
-  			margin: 20px auto;
-  			font-family: "Lora", serif;
-  			letter-spacing: .04em;
-  		}
+        h1 {
+            width: 960px;
+            margin: 20px auto;
+            font-family: "Lora", serif;
+            letter-spacing: .04em;
+        }
 
-  		h2 {
-  			font-family: "Lora", serif;
-  			letter-spacing: .04em;
-  		}
+        h2 {
+            font-family: "Lora", serif;
+            letter-spacing: .04em;
+        }
 
-  		p {
-  			font-size: 1em;
-  			line-height: 1.5em;
-  		}
+        p {
+            font-size: 1em;
+            line-height: 1.5em;
+        }
 
-  		a {
-  			color: #005daa;
-        		font-weight: bold;
-  			text-decoration: none;
-  		}
+        a {
+            color: #005daa;
+            font-weight: bold;
+            text-decoration: none;
+        }
 
-  		a:hover {
-  			text-decoration: underline;
-  		}
+        a:hover {
+            text-decoration: underline;
+        }
 
-  		ul {
-  			padding-left: 20px;
-  		}
+        ul {
+            padding-left: 20px;
+        }
 
-  		li {
-  			margin: 10px 0
-  		}
+        li {
+            margin: 10px 0
+        }
 
-  		#map {
-  		  width: 960px;
-  		  height: 540px;
-  		  margin: 10px auto;
-  		  border: 2px solid #d3d3d3;
-  		}
-  	</style>
+        #map {
+            width: 960px;
+            height: 540px;
+            margin: 10px auto;
+            border: 2px solid #d3d3d3;
+        }
+    </style>
 </head>
 
 <body>
-  <h1>Find Out How Far Away You Are From The Red Iguana</h1>
+    <h1>Find Out How Far Away You Are From The Red Iguana</h1>
 
-  <div id='map'></div>
+    <div id='map'></div>
 
- <section>
-   <h2>Click any spot on the map!</h2>
+    <section>
+        <h2>Click any spot on the map!</h2>
 
-   <p>Opened in 1985, The Red Iguana is a famous Mexican restaurant based out of Salt Lake City, Utah. I has been considered to be the best restaurants in the Salt Lake City area and has been visited by a variety of celebrities. It is also listed as one of America's top restaurants. Every aspect about the restaurant is fantastic including the food, service and atmosphere. This place is definitely worth eating at!</p>
-     
-   <p>Map authored by Owen Mickelson on November 25, 2016</p>
+        <p>Opened in 1985, The Red Iguana is a famous Mexican restaurant based out of Salt Lake City, Utah. I has been considered to be the best restaurants in the Salt Lake City area and has been visited by a variety of celebrities. It is also listed as
+            one of America's top restaurants. Every aspect about the restaurant is fantastic including the food, service and atmosphere. This place is definitely worth eating at!</p>
 
-   <p>Additional information about <a href="http://www.rediguana.com/">The Red Iguana</a> can be found here.</p>
+        <p>Map authored by Owen Mickelson on November 25, 2016</p>
 
- </section>
+        <p>Additional information about <a href="http://www.rediguana.com/">The Red Iguana</a> can be found here.</p>
+
+    </section>
 
     <script src="http://code.jquery.com/jquery-3.1.1.min.js"></script>
-  	<script src="https://unpkg.com/leaflet@1.0.1/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet@1.0.1/dist/leaflet.js"></script>
     <script>
+        // This is the source of my topographic map
 
-// This is the source of my topographic map
-        
         var options = {
-            center: [40.7718,-111.9124],
+            center: [40.7718, -111.9124],
             zoom: 7
-            }
+        }
 
         var map = L.map('map', options);
-        
+
         var tiles = L.tileLayer('http://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
-	       maxZoom: 17,
-	       attribution: 'Map data: &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
-});
+            maxZoom: 17,
+            attribution: 'Map data: &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
+        });
 
         map.addLayer(tiles);
-        
-    
-// Displays the Red Iguana symbol   
-    
-        var redIguana = L.latLng(40.7718,-111.9124);
-        
-        L.marker(redIguana, {
-        
-            icon : L.icon({
-            
-            iconUrl: 'red_iguana.png',
-            
-            iconSize: [40, 36]
-        
-            })
-        
-            }).addTo(map);
-        
-    
-// Clicking on the map activates the marker to display and calculate distance from the Red Iguana
-        
-        var click = map.on('click', function(e) {
-        
-            console.log(e.latlng);
-        
-        var marker = L.marker(e.latlng, {
-        
-            draggable: true,
-        
-            opacity: 10
-        
-        }).addTo(map).bindPopup(popup).openPopup();
-    
-        var distance = e.latlng.distanceTo(redIguana);
-            
-            distance = (distance/1609.34);
-        
-            distance = distance.toFixed(2);
-            
-        var bounds = map.getBounds();
-            
-        var popup = ("You are "+ distance +" miles from the Red Iguana" );
-            
-            marker.getPopup().setContent("You are "+ distance +" miles from the Red Iguana" );
-            
-            console.log(distance);
-            
-        
-        
-// Recalculates the distance from the Red Iguana when moving the marker    
-        
-        marker.on('dragend', function(e) {
-            
-        var marker1 = e.target._latlng;
-            
-        var distance1 = redIguana.distanceTo(marker1);
-            
-            distance1 = (distance1/1609.34);
-        
-            distance1 = distance1.toFixed(2);
-            
-        var bounds = map.getBounds();
-            
-        var popup = ("You are "+ distance1 +" miles from the Red Iguana" );
-            
-            marker.getPopup().setContent("You are "+ distance1 +" miles from the Red Iguana" );
-            
-            console.log(distance1);
-    
-               
-    });
-        
-    });
-           
-        
-    
-// Displays red circle around the Red Iguana symbol
-        
-        var redIguanaLocation = L.latLng(40.7718,-111.9124);
-    
-        var redIguanaCircle = L.circle(redIguanaLocation, 25, {
-    
-            color: "#d72b1e",  
-    
-            fillColor: "#d72b1e",  
-        
-            fillOpacity: 1
-    
-            });
-    
-            console.log(redIguanaCircle);
-        
-        redIguanaCircle.addTo(map);
 
-    
+
+        // Displays the Red Iguana symbol
+
+        var redIguana = L.latLng(40.7718, -111.9124);
+
+        L.marker(redIguana, {
+
+            icon: L.icon({
+
+                iconUrl: 'red_iguana.png',
+
+                iconSize: [40, 36]
+
+            })
+
+        }).addTo(map);
+
+
+        // Clicking on the map activates the marker to display and calculate distance from the Red Iguana
+
+        var click = map.on('click', function(e) {
+
+            console.log(e.latlng);
+
+            var marker = L.marker(e.latlng, {
+
+                draggable: true,
+
+                opacity: 10
+
+            }).addTo(map).bindPopup(popup).openPopup();
+
+            var distance = e.latlng.distanceTo(redIguana);
+
+            distance = (distance / 1609.34);
+
+            distance = distance.toFixed(2);
+
+            var popup = ("You are " + distance + " miles from the Red Iguana");
+
+            marker.getPopup().setContent("You are " + distance + " miles from the Red Iguana");
+
+            console.log(distance);
+
+
+
+            // Recalculates the distance from the Red Iguana when moving the marker
+
+            marker.on('dragend', function(e) {
+
+                var marker1 = e.target._latlng;
+
+                var distance1 = redIguana.distanceTo(marker1);
+
+                distance1 = (distance1 / 1609.34);
+
+                distance1 = distance1.toFixed(2);
+
+                var popup = ("You are " + distance1 + " miles from the Red Iguana");
+
+                marker.getPopup().setContent("You are " + distance1 + " miles from the Red Iguana");
+
+                marker.openPopup();
+
+
+            });
+
+        });
+
+
+
+        // Displays red circle around the Red Iguana symbol
+
+        var redIguanaCircle = L.circle(redIguana, 3000, {
+
+            color: "#d72b1e",
+            fillColor: "#d72b1e",
+            fillOpacity: 1
+
+        }).addTo(map);
+
     </script>
 
 </body>
 
 </html>
-
-
-
